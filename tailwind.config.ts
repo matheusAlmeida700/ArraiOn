@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,7 +19,24 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'festa': ['Fredoka', 'cursive'],
+				'sans': ['Inter', 'sans-serif'],
+			},
 			colors: {
+				festa: {
+					50: '#fef7ee',
+					100: '#fdeed5',
+					200: '#fad9aa',
+					300: '#f6c174',
+					400: '#f1a23c',
+					500: '#ed8b16',
+					600: '#de720c',
+					700: '#b8580c',
+					800: '#934610',
+					900: '#773b11',
+					950: '#411c06',
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -84,11 +102,24 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'wiggle': {
+					'0%, 100%': { transform: 'rotate(-3deg)' },
+					'50%': { transform: 'rotate(3deg)' },
+				},
+				'tada': {
+					'0%': { transform: 'scale3d(1, 1, 1)' },
+					'10%, 20%': { transform: 'scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg)' },
+					'30%, 50%, 70%, 90%': { transform: 'scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg)' },
+					'40%, 60%, 80%': { transform: 'scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg)' },
+					'100%': { transform: 'scale3d(1, 1, 1)' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'wiggle': 'wiggle 1s ease-in-out infinite',
+				'tada': 'tada 1s ease-in-out',
 			}
 		}
 	},
