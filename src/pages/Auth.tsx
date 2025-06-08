@@ -1,86 +1,132 @@
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Auth = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("login");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
-  const [loginForm, setLoginForm] = useState({
-    email: '',
-    password: ''
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    cpf: "",
+    password: "",
   });
-  
-  const [registerForm, setRegisterForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const { isAuthenticated, login, signup } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  // if (isAuthenticated) {
+  //   return <Navigate to="/games" />;
+  // }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/games');
-    }, 1500);
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      if (activeTab === "login") {
+        await login(formData.email, formData.password);
+        navigate("/games");
+      } else {
+        if (!formData.username || formData.username.trim() === "") {
+          throw new Error("Nome é obrigatório");
+        }
+        await signup(
+          formData.username,
+          formData.email,
+          formData.cpf,
+          formData.password
+        );
+        toast({
+          title: "Conta criada",
+          description: "Sua conta foi criada com sucesso!",
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Erro ao entrar. Por favor, tente novamente.";
+      setError(errorMessage);
+      toast({
+        title: "Erro ao entrar",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate registration process
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/games');
-    }, 1500);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const switchTab = (tab: string) => {
+    setActiveTab(tab);
+    setError(null);
+    setFormData({
+      username: "",
+      email: "",
+      cpf: "",
+      password: "",
+    });
   };
 
   return (
     <div className="min-h-screen festa-bg relative overflow-hidden">
-      {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
+        <div
           className="absolute top-20 left-10 text-6xl opacity-20 animate-float"
-          style={{ animationDelay: '0s' }}
+          style={{ animationDelay: "0s" }}
         >
           🎪
         </div>
-        <div 
+        <div
           className="absolute top-1/3 right-20 text-5xl opacity-15 animate-bounce-gentle"
-          style={{ animationDelay: '1s' }}
+          style={{ animationDelay: "1s" }}
         >
           🌽
         </div>
-        <div 
+        <div
           className="absolute bottom-1/4 left-20 text-4xl opacity-25 animate-float"
-          style={{ animationDelay: '2s' }}
+          style={{ animationDelay: "2s" }}
         >
           🔥
         </div>
-        <div 
+        <div
           className="absolute bottom-20 right-10 text-5xl opacity-20 animate-bounce-gentle"
-          style={{ animationDelay: '3s' }}
+          style={{ animationDelay: "3s" }}
         >
           🎭
         </div>
       </div>
 
-      {/* Header */}
       <div className="relative z-10 p-6">
         <Button
           variant="ghost"
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="flex items-center gap-2 text-festa-text hover:text-festa-accent transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -88,7 +134,6 @@ const Auth = () => {
         </Button>
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-8 max-w-md">
         <div className="text-center mb-8">
           <div className="text-6xl mb-4 animate-bounce-gentle">🎉</div>
@@ -109,17 +154,22 @@ const Auth = () => {
               Escolha como deseja continuar
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent>
-            <Tabs defaultValue="login" className="w-full">
+            <Tabs
+              defaultValue="login"
+              value={activeTab}
+              onValueChange={(val) => switchTab(val as "login" | "register")}
+              className="w-full"
+            >
               <TabsList className="grid w-full grid-cols-2 mb-6 bg-festa-surface/50">
-                <TabsTrigger 
-                  value="login" 
+                <TabsTrigger
+                  value="login"
                   className="data-[state=active]:bg-festa-accent data-[state=active]:text-white"
                 >
                   Entrar
                 </TabsTrigger>
-                <TabsTrigger 
+                <TabsTrigger
                   value="register"
                   className="data-[state=active]:bg-festa-accent data-[state=active]:text-white"
                 >
@@ -128,7 +178,7 @@ const Auth = () => {
               </TabsList>
 
               <TabsContent value="login" className="space-y-4">
-                <form onSubmit={handleLogin} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-festa-text">
                       Email
@@ -137,9 +187,10 @@ const Auth = () => {
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-festa-text-muted w-4 h-4" />
                       <Input
                         type="email"
+                        name="email"
                         placeholder="seu@email.com"
-                        value={loginForm.email}
-                        onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
+                        value={formData.email}
+                        onChange={handleChange}
                         className="pl-10 bg-festa-surface/30 border-festa-border focus:border-festa-accent"
                         required
                       />
@@ -154,9 +205,10 @@ const Auth = () => {
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-festa-text-muted w-4 h-4" />
                       <Input
                         type={showPassword ? "text" : "password"}
+                        name="password"
                         placeholder="••••••••"
-                        value={loginForm.password}
-                        onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                        value={formData.password}
+                        onChange={handleChange}
                         className="pl-10 pr-10 bg-festa-surface/30 border-festa-border focus:border-festa-accent"
                         required
                       />
@@ -167,7 +219,11 @@ const Auth = () => {
                         className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
                         onClick={() => setShowPassword(!showPassword)}
                       >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -177,13 +233,13 @@ const Auth = () => {
                     disabled={isLoading}
                     className="w-full festa-button text-white font-semibold py-3 mt-6"
                   >
-                    {isLoading ? 'Entrando...' : '🎪 Entrar na Festa'}
+                    {isLoading ? "Entrando..." : "🎪 Entrar na Festa"}
                   </Button>
                 </form>
               </TabsContent>
 
               <TabsContent value="register" className="space-y-4">
-                <form onSubmit={handleRegister} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-festa-text">
                       Nome
@@ -192,9 +248,10 @@ const Auth = () => {
                       <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-festa-text-muted w-4 h-4" />
                       <Input
                         type="text"
+                        name="username"
                         placeholder="Seu nome"
-                        value={registerForm.name}
-                        onChange={(e) => setRegisterForm({...registerForm, name: e.target.value})}
+                        value={formData.username}
+                        onChange={handleChange}
                         className="pl-10 bg-festa-surface/30 border-festa-border focus:border-festa-accent"
                         required
                       />
@@ -209,11 +266,31 @@ const Auth = () => {
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-festa-text-muted w-4 h-4" />
                       <Input
                         type="email"
+                        name="email"
                         placeholder="seu@email.com"
-                        value={registerForm.email}
-                        onChange={(e) => setRegisterForm({...registerForm, email: e.target.value})}
+                        value={formData.email}
+                        onChange={handleChange}
                         className="pl-10 bg-festa-surface/30 border-festa-border focus:border-festa-accent"
                         required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="cpf" className="text-md font-medium">
+                      CPF
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                      <Input
+                        id="cpf"
+                        name="cpf"
+                        type="cpf"
+                        required
+                        value={formData.cpf}
+                        onChange={handleChange}
+                        className="pl-10"
+                        placeholder="000.000.000-00"
                       />
                     </div>
                   </div>
@@ -226,26 +303,10 @@ const Auth = () => {
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-festa-text-muted w-4 h-4" />
                       <Input
                         type={showPassword ? "text" : "password"}
+                        name="password"
                         placeholder="••••••••"
-                        value={registerForm.password}
-                        onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})}
-                        className="pl-10 bg-festa-surface/30 border-festa-border focus:border-festa-accent"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-festa-text">
-                      Confirmar Senha
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-festa-text-muted w-4 h-4" />
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="••••••••"
-                        value={registerForm.confirmPassword}
-                        onChange={(e) => setRegisterForm({...registerForm, confirmPassword: e.target.value})}
+                        value={formData.password}
+                        onChange={handleChange}
                         className="pl-10 bg-festa-surface/30 border-festa-border focus:border-festa-accent"
                         required
                       />
@@ -257,7 +318,7 @@ const Auth = () => {
                     disabled={isLoading}
                     className="w-full festa-button text-white font-semibold py-3 mt-6"
                   >
-                    {isLoading ? 'Criando conta...' : '🎪 Criar Conta'}
+                    {isLoading ? "Criando conta..." : "🎪 Criar Conta"}
                   </Button>
                 </form>
               </TabsContent>
@@ -267,11 +328,11 @@ const Auth = () => {
 
         <div className="text-center mt-6">
           <p className="text-sm text-festa-text-muted">
-            Ao continuar, você concorda com nossos{' '}
+            Ao continuar, você concorda com nossos{" "}
             <span className="text-festa-accent cursor-pointer hover:underline">
               Termos de Uso
-            </span>{' '}
-            e{' '}
+            </span>{" "}
+            e{" "}
             <span className="text-festa-accent cursor-pointer hover:underline">
               Política de Privacidade
             </span>

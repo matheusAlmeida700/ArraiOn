@@ -1,84 +1,83 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useGame } from "@/contexts/GameContext";
 
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useGame } from '@/contexts/GameContext';
-
-const avatars = ['🌽', '🎪', '🎭', '🔥', '🎵', '⭐', '🎯', '🏆'];
+const avatars = ["🌽", "🎪", "🎭", "🔥", "🎵", "⭐", "🎯", "🏆"];
 
 const featuredGames = [
-  { 
-    id: 'quiz', 
-    name: 'Quiz Junino', 
-    emoji: '🎓', 
-    xp: '10-30 XP', 
-    description: 'Teste seus conhecimentos sobre festa junina',
-    image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400',
+  {
+    id: "quiz",
+    name: "Quiz Junino",
+    emoji: "🎓",
+    xp: "10-30 XP",
+    description: "Teste seus conhecimentos sobre festa junina",
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400",
   },
-  { 
-    id: 'memory', 
-    name: 'Jogo da Memória', 
-    emoji: '🧠', 
-    xp: '15-25 XP', 
-    description: 'Encontre os pares das tradições juninas',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+  {
+    id: "memory",
+    name: "Jogo da Memória",
+    emoji: "🧠",
+    xp: "15-25 XP",
+    description: "Encontre os pares das tradições juninas",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
   },
-  { 
-    id: 'reaction', 
-    name: 'Reflexo do Fogueteiro', 
-    emoji: '🎆', 
-    xp: '20-40 XP', 
-    description: 'Teste sua velocidade e precisão',
-    image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400',
+  {
+    id: "reaction",
+    name: "Reflexo do Fogueteiro",
+    emoji: "🎆",
+    xp: "20-40 XP",
+    description: "Teste sua velocidade e precisão",
+    image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400",
   },
 ];
 
 const featuredRewards = [
-  { 
-    name: 'Canjica Doce', 
-    emoji: '🥛', 
-    cost: '50 XP', 
-    description: 'Deliciosa e quentinha para aquecer o coração',
-    image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300'
+  {
+    name: "Canjica Doce",
+    emoji: "🥛",
+    cost: "50 XP",
+    description: "Deliciosa e quentinha para aquecer o coração",
+    image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300",
   },
-  { 
-    name: 'Pamonha Tradicional', 
-    emoji: '🌽', 
-    cost: '75 XP', 
-    description: 'O sabor autêntico da festa junina',
-    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=300'
+  {
+    name: "Pamonha Tradicional",
+    emoji: "🌽",
+    cost: "75 XP",
+    description: "O sabor autêntico da festa junina",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=300",
   },
-  { 
-    name: 'Chapéu de Palha', 
-    emoji: '👒', 
-    cost: '120 XP', 
-    description: 'Complete seu visual caipira com estilo',
-    image: 'https://images.unsplash.com/photo-1521369909029-2afed882baee?w=300'
+  {
+    name: "Chapéu de Palha",
+    emoji: "👒",
+    cost: "120 XP",
+    description: "Complete seu visual caipira com estilo",
+    image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?w=300",
   },
 ];
 
 const Index = () => {
   const navigate = useNavigate();
   const { nickname, avatar, setUserProfile } = useGame();
-  const [tempNickname, setTempNickname] = useState(nickname || '');
-  const [tempAvatar, setTempAvatar] = useState(avatar || '🌽');
+  const [tempNickname, setTempNickname] = useState(nickname || "");
+  const [tempAvatar, setTempAvatar] = useState(avatar || "🌽");
   const [scrollY, setScrollY] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
     const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleEnterFesta = () => {
     if (tempNickname.trim()) {
       setUserProfile(tempNickname.trim(), tempAvatar);
-      navigate('/games');
+      navigate("/games");
     } else {
-      navigate('/auth');
+      navigate("/auth");
     }
   };
 
@@ -86,27 +85,36 @@ const Index = () => {
     <div className="min-h-screen festa-bg text-festa-text overflow-hidden relative">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-        <div 
+        <div
           className="absolute top-20 left-10 lg:top-32 lg:left-20 text-4xl lg:text-6xl opacity-40 animate-float"
           style={{ transform: `translateY(${scrollY * 0.05}px)` }}
         >
           🎪
         </div>
-        <div 
+        <div
           className="absolute top-1/3 right-10 lg:right-20 text-3xl lg:text-5xl opacity-30 animate-bounce-gentle"
-          style={{ transform: `translateY(${scrollY * 0.08}px)`, animationDelay: '1s' }}
+          style={{
+            transform: `translateY(${scrollY * 0.08}px)`,
+            animationDelay: "1s",
+          }}
         >
           🌽
         </div>
-        <div 
+        <div
           className="absolute bottom-1/3 left-10 lg:left-20 text-3xl lg:text-5xl opacity-35 animate-float"
-          style={{ transform: `translateY(${scrollY * 0.03}px)`, animationDelay: '2s' }}
+          style={{
+            transform: `translateY(${scrollY * 0.03}px)`,
+            animationDelay: "2s",
+          }}
         >
           🔥
         </div>
-        <div 
+        <div
           className="absolute top-1/2 right-1/4 text-2xl lg:text-4xl opacity-25 animate-bounce-gentle"
-          style={{ transform: `translateY(${scrollY * 0.06}px)`, animationDelay: '3s' }}
+          style={{
+            transform: `translateY(${scrollY * 0.06}px)`,
+            animationDelay: "3s",
+          }}
         >
           🎭
         </div>
@@ -116,24 +124,30 @@ const Index = () => {
       <div className="hero-banner min-h-screen flex items-center justify-center px-4 lg:px-8 xl:px-12">
         <div className="container mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-center">
-            
             {/* Left Column - Content */}
-            <div className={`space-y-6 lg:space-y-8 xl:space-y-12 transition-all duration-1000 ${isLoaded ? 'animate-slide-up' : 'opacity-0'}`}>
+            <div
+              className={`space-y-6 lg:space-y-8 xl:space-y-12 transition-all duration-1000 ${
+                isLoaded ? "animate-slide-up" : "opacity-0"
+              }`}
+            >
               <div className="space-y-4 lg:space-y-6">
                 <div className="inline-flex items-center px-4 py-2 bg-festa-accent/10 border border-festa-accent/30 rounded-full backdrop-blur-sm">
-                  <span className="text-festa-accent font-medium text-sm lg:text-base">🎉 Festa Junina 2024</span>
+                  <span className="text-festa-accent font-medium text-sm lg:text-base">
+                    🎉 Festa Junina 2024
+                  </span>
                 </div>
-                
+
                 <h1 className="font-festa text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-festa-text leading-tight">
-                  Transforme sua espera em{' '}
+                  Transforme sua espera em{" "}
                   <span className="bg-gradient-to-r from-festa-accent via-festa-secondary to-festa-primary bg-clip-text text-transparent">
                     diversão
                   </span>
                 </h1>
-                
+
                 <p className="text-base lg:text-lg xl:text-xl text-festa-text-light leading-relaxed max-w-2xl">
-                  Jogue, ganhe pontos e troque por prêmios reais enquanto aproveita a festa junina. 
-                  Uma experiência única que torna cada momento especial.
+                  Jogue, ganhe pontos e troque por prêmios reais enquanto
+                  aproveita a festa junina. Uma experiência única que torna cada
+                  momento especial.
                 </p>
               </div>
 
@@ -146,7 +160,7 @@ const Index = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => navigate('/games')}
+                  onClick={() => navigate("/games")}
                   className="border-festa-border bg-festa-surface/50 hover:bg-festa-surface text-festa-text font-medium py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-base lg:text-lg backdrop-blur-sm"
                 >
                   Ver Jogos
@@ -166,68 +180,23 @@ const Index = () => {
                   ))}
                 </div>
                 <div className="text-festa-text-muted text-sm lg:text-base">
-                  <span className="font-semibold text-festa-text">500+</span> jogadores ativos
+                  <span className="font-semibold text-festa-text">500+</span>{" "}
+                  jogadores ativos
                 </div>
               </div>
             </div>
 
             {/* Right Column - Registration Form */}
-            <div className={`transition-all duration-1000 delay-300 ${isLoaded ? 'animate-scale-in' : 'opacity-0'}`}>
-              <div className="glass-effect-ultra rounded-2xl lg:rounded-3xl p-6 lg:p-8 xl:p-10 border border-festa-border/30 shadow-2xl">
-                <div className="text-center mb-6 lg:mb-8">
-                  <div className="text-4xl lg:text-5xl xl:text-6xl mb-4 animate-bounce-gentle">🎪</div>
-                  <h2 className="font-festa text-xl lg:text-2xl xl:text-3xl font-bold text-festa-text mb-2">
-                    Entre na Festa!
-                  </h2>
-                  <p className="text-festa-text-light text-sm lg:text-base">
-                    Crie seu perfil e comece a diversão
-                  </p>
-                </div>
-
-                <div className="space-y-4 lg:space-y-6">
-                  <div className="space-y-2 lg:space-y-3">
-                    <label className="block text-sm font-semibold text-festa-text">
-                      Seu apelido na festa
-                    </label>
-                    <Input
-                      type="text"
-                      placeholder="Digite seu apelido..."
-                      value={tempNickname}
-                      onChange={(e) => setTempNickname(e.target.value)}
-                      className="text-center text-base lg:text-lg border-festa-border/50 bg-festa-surface/30 backdrop-blur-sm text-festa-text placeholder-festa-text-muted focus:border-festa-accent focus:ring-festa-accent/20 rounded-xl h-11 lg:h-12"
-                      maxLength={15}
-                    />
-                  </div>
-
-                  <div className="space-y-2 lg:space-y-3">
-                    <label className="block text-sm font-semibold text-festa-text">
-                      Escolha seu avatar
-                    </label>
-                    <div className="grid grid-cols-4 gap-2 lg:gap-3">
-                      {avatars.map((emojiAvatar) => (
-                        <button
-                          key={emojiAvatar}
-                          onClick={() => setTempAvatar(emojiAvatar)}
-                          className={`text-xl lg:text-2xl xl:text-3xl p-2 lg:p-3 xl:p-4 rounded-xl border-2 transition-all duration-200 hover:scale-105 ${
-                            tempAvatar === emojiAvatar
-                              ? 'border-festa-accent bg-festa-accent/10 scale-105'
-                              : 'border-festa-border/30 hover:border-festa-accent/50 bg-festa-surface/20'
-                          }`}
-                        >
-                          {emojiAvatar}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={handleEnterFesta}
-                    className="w-full festa-button text-white font-festa font-semibold py-3 lg:py-4 rounded-xl text-base lg:text-lg shadow-lg"
-                  >
-                    🎪 Começar a Festa!
-                  </Button>
-                </div>
-              </div>
+            <div
+              className={`transition-all duration-1000 delay-300 ${
+                isLoaded ? "animate-scale-in" : "opacity-0"
+              }`}
+            >
+              <img
+                className="rounded-xl"
+                src="https://blog.staycharlie.com.br/wp-content/uploads/2025/06/festa-junina.jpg"
+                alt="Festa Junina"
+              />
             </div>
           </div>
         </div>
@@ -252,7 +221,7 @@ const Index = () => {
               Diversão garantida enquanto você espera na fila
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 xl:gap-8">
             {featuredGames.map((game, index) => (
               <div
@@ -261,12 +230,12 @@ const Index = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => navigate(`/games/${game.id}`)}
               >
-                <div 
+                <div
                   className="h-40 lg:h-48 xl:h-56 relative overflow-hidden bg-festa-surface"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05)), url(${game.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
                   }}
                 >
                   <div className="absolute top-3 lg:top-4 right-3 lg:right-4 text-2xl lg:text-3xl xl:text-4xl group-hover:scale-110 transition-transform">
@@ -304,7 +273,7 @@ const Index = () => {
               Troque seus pontos por recompensas reais da festa
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 xl:gap-8">
             {featuredRewards.map((reward, index) => (
               <div
@@ -312,12 +281,12 @@ const Index = () => {
                 className={`group glass-effect-strong rounded-xl lg:rounded-2xl border border-festa-border/30 overflow-hidden hover-lift animate-slide-up`}
                 style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
               >
-                <div 
+                <div
                   className="h-40 lg:h-48 xl:h-56 relative overflow-hidden bg-festa-surface"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05)), url(${reward.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
                   }}
                 >
                   <div className="absolute top-3 lg:top-4 right-3 lg:right-4 text-2xl lg:text-3xl xl:text-4xl group-hover:scale-110 transition-transform">
@@ -351,7 +320,8 @@ const Index = () => {
             Pronto para a aventura?
           </h3>
           <p className="text-base lg:text-lg xl:text-xl text-festa-text-light mb-6 lg:mb-8 max-w-2xl mx-auto">
-            Entre na festa e transforme sua espera em momentos inesquecíveis de diversão e descoberta.
+            Entre na festa e transforme sua espera em momentos inesquecíveis de
+            diversão e descoberta.
           </p>
           <Button
             onClick={handleEnterFesta}

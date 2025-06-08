@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,34 +18,37 @@ import RhythmGame from "./pages/games/RhythmGame";
 import NumberGame from "./pages/games/NumberGame";
 import NotFound from "./pages/NotFound";
 import { GameProvider } from "./contexts/GameContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <GameProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/games" element={<GamesCatalog />} />
-            <Route path="/games/:gameId" element={<GameDetails />} />
-            <Route path="/lobby" element={<GameLobby />} />
-            <Route path="/rewards" element={<RewardStore />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/play/quiz" element={<QuizGame />} />
-            <Route path="/play/memory" element={<MemoryGame />} />
-            <Route path="/play/reaction" element={<ReactionGame />} />
-            <Route path="/play/pin-the-tail" element={<PinTheGame />} />
-            <Route path="/play/rhythm" element={<RhythmGame />} />
-            <Route path="/play/number" element={<NumberGame />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </GameProvider>
+      <AuthProvider>
+        <GameProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/games" element={<GamesCatalog />} />
+              <Route path="/games/:gameId" element={<GameDetails />} />
+              <Route path="/lobby" element={<GameLobby />} />
+              <Route path="/rewards" element={<RewardStore />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/play/quiz" element={<QuizGame />} />
+              <Route path="/play/memory" element={<MemoryGame />} />
+              <Route path="/play/reaction" element={<ReactionGame />} />
+              <Route path="/play/pin-the-tail" element={<PinTheGame />} />
+              <Route path="/play/rhythm" element={<RhythmGame />} />
+              <Route path="/play/number" element={<NumberGame />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </GameProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
