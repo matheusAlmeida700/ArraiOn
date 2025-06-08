@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
+    --background: 0 0% 100%;
     --foreground: 220 13% 18%;
 
     --card: 0 0% 100%;
@@ -36,19 +36,19 @@
 
     --radius: 0.5rem;
 
-    /* Custom Festa Variables - Neutral Palette */
-    --festa-primary: 220 30% 25%;
-    --festa-secondary: 210 20% 35%;
-    --festa-accent: 45 85% 60%;
-    --festa-surface: 210 25% 95%;
-    --festa-surface-dark: 220 15% 12%;
-    --festa-text: 220 15% 20%;
-    --festa-text-light: 210 15% 40%;
-    --festa-text-muted: 210 10% 60%;
-    --festa-border: 210 20% 85%;
-    --festa-success: 145 60% 45%;
-    --festa-warning: 35 85% 60%;
-    --festa-danger: 0 70% 55%;
+    /* Custom Neutral Theme Variables */
+    --festa-primary: 220 8% 25%;
+    --festa-secondary: 210 6% 40%;
+    --festa-accent: 25 15% 45%;
+    --festa-surface: 210 15% 98%;
+    --festa-surface-dark: 220 10% 15%;
+    --festa-text: 220 10% 15%;
+    --festa-text-light: 210 8% 45%;
+    --festa-text-muted: 210 6% 65%;
+    --festa-border: 210 12% 88%;
+    --festa-success: 142 40% 40%;
+    --festa-warning: 30 50% 50%;
+    --festa-danger: 0 55% 50%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -82,9 +82,9 @@
     --ring: 210 20% 80%;
 
     /* Dark mode festa variables */
-    --festa-primary: 210 25% 85%;
-    --festa-secondary: 210 15% 75%;
-    --festa-accent: 45 85% 65%;
+    --festa-primary: 210 15% 85%;
+    --festa-secondary: 210 10% 75%;
+    --festa-accent: 25 15% 65%;
     --festa-surface: 220 15% 12%;
     --festa-surface-dark: 220 20% 8%;
     --festa-text: 210 20% 95%;
@@ -113,7 +113,7 @@
   }
   
   .festa-bg {
-    background: linear-gradient(135deg, hsl(var(--festa-surface-dark)) 0%, hsl(var(--festa-primary)) 100%);
+    background: linear-gradient(135deg, hsl(var(--festa-surface)) 0%, hsl(var(--festa-border)) 100%);
     position: relative;
   }
 
@@ -125,11 +125,11 @@
     right: 0;
     bottom: 0;
     background-image: 
-      radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+      radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+      radial-gradient(circle at 80% 20%, rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+      radial-gradient(circle at 40% 40%, rgba(0, 0, 0, 0.005) 1px, transparent 1px);
     background-size: 60px 60px, 90px 90px, 130px 130px;
-    animation: twinkle 25s linear infinite;
+    animation: twinkle 30s linear infinite;
     pointer-events: none;
     z-index: 1;
   }
@@ -141,11 +141,10 @@
 
   .hero-banner {
     background: linear-gradient(135deg, 
-      hsla(var(--festa-surface-dark), 0.95), 
-      hsla(var(--festa-primary), 0.9), 
-      hsla(var(--festa-accent), 0.8)
+      hsla(var(--festa-surface), 0.95), 
+      hsla(var(--festa-border), 0.85)
     ),
-    url('https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1200') center/cover;
+    url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200') center/cover;
     position: relative;
   }
 
@@ -157,9 +156,8 @@
     right: 0;
     bottom: 0;
     background: linear-gradient(135deg, 
-      hsla(var(--festa-surface-dark), 0.85), 
-      hsla(var(--festa-primary), 0.75), 
-      hsla(var(--festa-accent), 0.65)
+      hsla(var(--festa-surface), 0.9), 
+      hsla(var(--festa-border), 0.8)
     );
     z-index: 1;
   }
@@ -172,21 +170,21 @@
 
 @keyframes twinkle {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+  50% { opacity: 0.3; }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(1deg); }
-  66% { transform: translateY(5px) rotate(-0.5deg); }
+  33% { transform: translateY(-8px) rotate(1deg); }
+  66% { transform: translateY(4px) rotate(-0.5deg); }
 }
 
 @keyframes pulse-glow {
   0%, 100% { 
-    box-shadow: 0 0 20px hsla(var(--festa-accent), 0.3), 0 0 40px hsla(var(--festa-accent), 0.1); 
+    box-shadow: 0 0 15px hsla(var(--festa-accent), 0.2), 0 0 30px hsla(var(--festa-accent), 0.05); 
   }
   50% { 
-    box-shadow: 0 0 30px hsla(var(--festa-accent), 0.5), 0 0 60px hsla(var(--festa-accent), 0.2); 
+    box-shadow: 0 0 25px hsla(var(--festa-accent), 0.3), 0 0 50px hsla(var(--festa-accent), 0.1); 
   }
 }
 
@@ -197,13 +195,13 @@
 
 @keyframes bounce-gentle {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-4px); }
 }
 
 @keyframes slide-up {
   from { 
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to { 
     opacity: 1;
@@ -214,7 +212,7 @@
 @keyframes scale-in {
   from { 
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.98);
   }
   to { 
     opacity: 1;
@@ -222,9 +220,13 @@
   }
 }
 
-@keyframes rotate-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes fade-in {
+  from { 
+    opacity: 0;
+  }
+  to { 
+    opacity: 1;
+  }
 }
 
 .animate-float {
@@ -232,7 +234,7 @@
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+  animation: pulse-glow 3s ease-in-out infinite;
 }
 
 .animate-shimmer {
@@ -253,34 +255,35 @@
   animation: scale-in 0.5s ease-out forwards;
 }
 
-.animate-rotate-slow {
-  animation: rotate-slow 15s linear infinite;
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
 }
 
 .glass-effect {
   backdrop-filter: blur(8px);
-  background: hsla(var(--festa-surface), 0.1);
-  border: 1px solid hsla(var(--festa-border), 0.2);
+  background: hsla(var(--festa-surface), 0.8);
+  border: 1px solid hsla(var(--festa-border), 0.6);
 }
 
 .glass-effect-strong {
   backdrop-filter: blur(12px);
-  background: hsla(var(--festa-surface), 0.15);
-  border: 1px solid hsla(var(--festa-border), 0.3);
+  background: hsla(var(--festa-surface), 0.85);
+  border: 1px solid hsla(var(--festa-border), 0.7);
 }
 
 .glass-effect-ultra {
   backdrop-filter: blur(16px);
-  background: hsla(var(--festa-surface), 0.2);
-  border: 2px solid hsla(var(--festa-border), 0.4);
+  background: hsla(var(--festa-surface), 0.9);
+  border: 1px solid hsla(var(--festa-border), 0.8);
+  box-shadow: 0 8px 32px hsla(var(--festa-primary), 0.1);
 }
 
 .text-shadow {
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .text-shadow-strong {
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5), 0 0 10px hsla(var(--festa-accent), 0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .hover-lift {
@@ -288,17 +291,15 @@
 }
 
 .hover-lift:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
 .festa-button {
   background: linear-gradient(135deg, 
     hsl(var(--festa-primary)), 
-    hsl(var(--festa-secondary)), 
-    hsl(var(--festa-accent))
+    hsl(var(--festa-secondary))
   );
-  background-size: 200% 200%;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -311,7 +312,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
   transition: left 0.5s;
 }
 
@@ -320,35 +321,16 @@
 }
 
 .festa-button:hover {
-  background-position: right center;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px hsla(var(--festa-accent), 0.4);
-}
-
-.neon-glow {
-  box-shadow: 
-    0 0 10px hsla(var(--festa-accent), 0.3),
-    0 0 20px hsla(var(--festa-accent), 0.2),
-    0 0 40px hsla(var(--festa-accent), 0.1),
-    inset 0 0 10px hsla(var(--festa-accent), 0.1);
-}
-
-.neon-glow-strong {
-  box-shadow: 
-    0 0 15px hsla(var(--festa-accent), 0.4),
-    0 0 30px hsla(var(--festa-accent), 0.3),
-    0 0 60px hsla(var(--festa-accent), 0.2),
-    0 0 90px hsla(var(--festa-accent), 0.1),
-    inset 0 0 15px hsla(var(--festa-accent), 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px hsla(var(--festa-primary), 0.3);
 }
 
 .festa-texture {
   background-image: 
-    radial-gradient(circle at 25% 25%, hsla(var(--festa-accent), 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, hsla(var(--festa-secondary), 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, hsla(var(--festa-primary), 0.05) 0%, transparent 50%);
-  background-size: 120px 120px, 180px 180px, 240px 240px;
-  background-position: 0 0, 60px 60px, 120px 120px;
+    radial-gradient(circle at 25% 25%, hsla(var(--festa-accent), 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, hsla(var(--festa-secondary), 0.02) 0%, transparent 50%);
+  background-size: 120px 120px, 180px 180px;
+  background-position: 0 0, 60px 60px;
 }
 
 @media (min-width: 768px) {
@@ -362,8 +344,8 @@
   }
   
   .hover-lift:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -379,11 +361,5 @@
   
   .animate-float {
     animation: float 8s ease-in-out infinite;
-  }
-}
-
-@media (min-width: 1280px) {
-  .hero-banner {
-    min-height: 80vh;
   }
 }
