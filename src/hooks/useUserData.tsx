@@ -4,7 +4,6 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export function useUserData() {
   const { user } = useAuth();
-  console.log(user);
 
   return useQuery({
     queryKey: ["user", user?.id],

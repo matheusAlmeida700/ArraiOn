@@ -1,8 +1,7 @@
-
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { useGame } from '@/contexts/GameContext';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useGame } from "@/contexts/GameContext";
 
 const questions = [
   {
@@ -27,9 +26,14 @@ const questions = [
   },
   {
     question: "As fogueiras juninas representam:",
-    options: ["Purificação", "Aquecimento", "Iluminação", "Todas as anteriores"],
+    options: [
+      "Purificação",
+      "Aquecimento",
+      "Iluminação",
+      "Todas as anteriores",
+    ],
     correct: 3,
-  }
+  },
 ];
 
 const QuizGame = () => {
@@ -54,7 +58,7 @@ const QuizGame = () => {
   const handleAnswer = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
     setShowResult(true);
-    
+
     const isCorrect = answerIndex === questions[currentQuestion].correct;
     if (isCorrect) {
       setScore(score + 1);
@@ -92,10 +96,16 @@ const QuizGame = () => {
       <div className="min-h-screen bg-gradient-to-br from-orange-400 via-red-500 to-yellow-500 p-4 flex items-center justify-center">
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full shadow-lg border-2 border-yellow-300 text-center">
           <div className="text-6xl mb-4">🎓</div>
-          <h2 className="text-2xl font-bold text-orange-600 mb-4">Quiz Finalizado!</h2>
-          <p className="text-lg mb-4">Você acertou {score} de {questions.length} perguntas!</p>
-          <p className="text-xl font-bold text-green-600 mb-6">+{score * 6} pontos ganhos! 🎉</p>
-          
+          <h2 className="text-2xl font-bold text-orange-600 mb-4">
+            Quiz Finalizado!
+          </h2>
+          <p className="text-lg mb-4">
+            Você acertou {score} de {questions.length} perguntas!
+          </p>
+          <p className="text-xl font-bold text-green-600 mb-6">
+            +{score * 6} pontos ganhos! 🎉
+          </p>
+
           <div className="space-y-3">
             <Button
               onClick={resetGame}
@@ -104,7 +114,7 @@ const QuizGame = () => {
               🔄 Jogar Novamente
             </Button>
             <Button
-              onClick={() => navigate('/lobby')}
+              onClick={() => navigate("/lobby")}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
             >
               🎪 Voltar ao Lobby
@@ -123,15 +133,21 @@ const QuizGame = () => {
             <div className="text-sm text-gray-600">
               Pergunta {currentQuestion + 1} de {questions.length}
             </div>
-            <div className={`text-lg font-bold ${timeLeft <= 5 ? 'text-red-500' : 'text-green-500'}`}>
+            <div
+              className={`text-lg font-bold ${
+                timeLeft <= 5 ? "text-red-500" : "text-green-500"
+              }`}
+            >
               ⏰ {timeLeft}s
             </div>
           </div>
 
           <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
-            <div 
+            <div
               className="bg-gradient-to-r from-orange-400 to-red-500 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+              style={{
+                width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+              }}
             ></div>
           </div>
 
@@ -151,11 +167,11 @@ const QuizGame = () => {
                 className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                   showResult
                     ? index === questions[currentQuestion].correct
-                      ? 'bg-green-100 border-green-500 text-green-800'
+                      ? "bg-green-100 border-green-500 text-green-800"
                       : selectedAnswer === index
-                      ? 'bg-red-100 border-red-500 text-red-800'
-                      : 'bg-gray-100 border-gray-300 text-gray-600'
-                    : 'bg-yellow-50 border-orange-300 hover:border-orange-500 hover:bg-orange-50 hover:scale-105'
+                      ? "bg-red-100 border-red-500 text-red-800"
+                      : "bg-gray-100 border-gray-300 text-gray-600"
+                    : "bg-yellow-50 border-orange-300 hover:border-orange-500 hover:bg-orange-50 hover:scale-105"
                 }`}
               >
                 {option}
@@ -166,9 +182,13 @@ const QuizGame = () => {
           {showResult && (
             <div className="mt-4 text-center">
               {selectedAnswer === questions[currentQuestion].correct ? (
-                <div className="text-green-600 font-bold">✅ Correto! +6 pontos</div>
+                <div className="text-green-600 font-bold">
+                  ✅ Correto! +6 pontos
+                </div>
               ) : (
-                <div className="text-red-600 font-bold">❌ Resposta incorreta!</div>
+                <div className="text-red-600 font-bold">
+                  ❌ Resposta incorreta!
+                </div>
               )}
             </div>
           )}

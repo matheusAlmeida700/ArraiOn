@@ -27,8 +27,8 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 export const API_ENDPOINTS = {
   users: `${API_BASE_URL}/users`,
   user: (id: string) => `${API_BASE_URL}/users/${id}`,
-  userLogin: `${API_BASE_URL}/auth/login`,
-  userRegister: `${API_BASE_URL}/auth/register`,
+  userLogin: `${API_BASE_URL}/users/login`,
+  userRegister: `${API_BASE_URL}/users/register`,
   progress: (id: string) => `${API_BASE_URL}/user/${id}/progress`,
   achievements: (id: string) => `${API_BASE_URL}/user/${id}/achievements`,
   xp: (id: string) => `${API_BASE_URL}/user/${id}/xp`,
@@ -139,7 +139,7 @@ export const api = {
       const url = API_ENDPOINTS.user(id);
 
       const response = await apiFetch(url);
-      const item = response.user;
+      const item = response;
 
       if (!item || !item.id) {
         throw new Error(`Item not found or invalid data format`);

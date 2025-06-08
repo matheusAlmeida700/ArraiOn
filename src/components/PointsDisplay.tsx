@@ -1,39 +1,14 @@
-import { useAuth } from "@/contexts/AuthContext";
 import { useGame } from "@/contexts/GameContext";
-import { useToast } from "@/hooks/use-toast";
 import { useUserData } from "@/hooks/useUserData";
 
 const PointsDisplay = () => {
-  const { user, isAuthenticated, logout } = useAuth();
-  const { toast } = useToast();
   const { data: userData, error, refetch } = useUserData();
 
-  const { points, avatar, getStreak } = useGame();
-  const streak = getStreak();
+  const { points, avatar } = useGame();
   const progressPercentage = ((points % 100) / 100) * 100;
 
   return (
     <div className="glass-effect-ultra rounded-xl lg:rounded-2xl xl:rounded-3xl p-4 lg:p-6 xl:p-8 mb-4 lg:mb-6 xl:mb-8 shadow-xl border border-festa-border/50 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 festa-texture opacity-10" />
-
-      {/* Subtle Floating Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-festa-accent/20 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${3 + Math.random() * 2}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
       <div className="relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between mb-4 lg:mb-6 xl:mb-8 space-y-3 lg:space-y-0">
           <div className="flex items-center space-x-3 lg:space-x-4 xl:space-x-6">
@@ -59,7 +34,6 @@ const PointsDisplay = () => {
           </div>
         </div>
 
-        {/* Progress Bar */}
         <div className="mb-4 lg:mb-6 xl:mb-8">
           <div className="relative w-full bg-festa-surface/50 rounded-full h-3 lg:h-4 xl:h-5 overflow-hidden border border-festa-border/30">
             <div
@@ -70,24 +44,6 @@ const PointsDisplay = () => {
             </div>
           </div>
         </div>
-
-        {/* Streak Display */}
-        {streak > 0 && (
-          <div className="flex items-center justify-center space-x-3 lg:space-x-4 bg-gradient-to-r from-festa-warning/15 to-festa-accent/15 rounded-xl lg:rounded-2xl p-3 lg:p-4 xl:p-6 border border-festa-accent/30 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-festa-warning/5 to-festa-accent/5 animate-shimmer"></div>
-            <div className="text-2xl lg:text-3xl xl:text-4xl animate-bounce relative z-10">
-              🔥
-            </div>
-            <div className="relative z-10 text-center lg:text-left">
-              <span className="text-festa-text font-festa text-base lg:text-lg xl:text-xl 2xl:text-2xl font-bold block">
-                {streak} sequência!
-              </span>
-              <div className="text-xs lg:text-sm text-festa-text-light font-medium">
-                Você está pegando fogo!
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

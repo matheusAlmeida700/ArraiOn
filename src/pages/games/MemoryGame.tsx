@@ -1,15 +1,21 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useGame } from "@/contexts/GameContext";
 
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { useGame } from '@/contexts/GameContext';
-
-const symbols = ['🌽', '🎪', '🔥', '🎭', '🎵', '⭐', '🎯', '🏆'];
+const symbols = ["🌽", "🎪", "🔥", "🎭", "🎵", "⭐", "🎯", "🏆"];
 
 const MemoryGame = () => {
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();
-  const [cards, setCards] = useState<Array<{id: number, symbol: string, isFlipped: boolean, isMatched: boolean}>>([]);
+  const [cards, setCards] = useState<
+    Array<{
+      id: number;
+      symbol: string;
+      isFlipped: boolean;
+      isMatched: boolean;
+    }>
+  >([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matches, setMatches] = useState(0);
   const [moves, setMoves] = useState(0);
@@ -32,29 +38,27 @@ const MemoryGame = () => {
   useEffect(() => {
     if (flippedCards.length === 2) {
       const [first, second] = flippedCards;
-      const firstCard = cards.find(card => card.id === first);
-      const secondCard = cards.find(card => card.id === second);
+      const firstCard = cards.find((card) => card.id === first);
+      const secondCard = cards.find((card) => card.id === second);
 
       if (firstCard && secondCard && firstCard.symbol === secondCard.symbol) {
-        // Match found
         setTimeout(() => {
-          setCards(prevCards => 
-            prevCards.map(card => 
-              card.id === first || card.id === second 
+          setCards((prevCards) =>
+            prevCards.map((card) =>
+              card.id === first || card.id === second
                 ? { ...card, isMatched: true }
                 : card
             )
           );
-          setMatches(prev => prev + 1);
+          setMatches((prev) => prev + 1);
           setFlippedCards([]);
           incrementStreak();
         }, 1000);
       } else {
-        // No match
         setTimeout(() => {
-          setCards(prevCards => 
-            prevCards.map(card => 
-              card.id === first || card.id === second 
+          setCards((prevCards) =>
+            prevCards.map((card) =>
+              card.id === first || card.id === second
                 ? { ...card, isFlipped: false }
                 : card
             )
@@ -63,7 +67,7 @@ const MemoryGame = () => {
           resetStreak();
         }, 1000);
       }
-      setMoves(prev => prev + 1);
+      setMoves((prev) => prev + 1);
     }
   }, [flippedCards]);
 
@@ -81,7 +85,7 @@ const MemoryGame = () => {
         id: index,
         symbol,
         isFlipped: false,
-        isMatched: false
+        isMatched: false,
       }));
     setCards(shuffled);
   };
@@ -97,16 +101,16 @@ const MemoryGame = () => {
 
   const flipCard = (id: number) => {
     if (flippedCards.length === 2 || gameEnded) return;
-    
-    const card = cards.find(c => c.id === id);
+
+    const card = cards.find((c) => c.id === id);
     if (!card || card.isFlipped || card.isMatched) return;
 
-    setCards(prevCards => 
-      prevCards.map(card => 
+    setCards((prevCards) =>
+      prevCards.map((card) =>
         card.id === id ? { ...card, isFlipped: true } : card
       )
     );
-    setFlippedCards(prev => [...prev, id]);
+    setFlippedCards((prev) => [...prev, id]);
   };
 
   const resetGame = () => {
@@ -129,13 +133,19 @@ const MemoryGame = () => {
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full shadow-lg border-2 border-yellow-300 text-center">
           <div className="text-6xl mb-4">🧠</div>
           <h2 className="text-2xl font-bold text-orange-600 mb-4">
-            {completed ? 'Parabéns!' : 'Tempo Esgotado!'}
+            {completed ? "Parabéns!" : "Tempo Esgotado!"}
           </h2>
-          <p className="text-lg mb-2">Você encontrou {matches} de {symbols.length} pares!</p>
+          <p className="text-lg mb-2">
+            Você encontrou {matches} de {symbols.length} pares!
+          </p>
           <p className="text-lg mb-2">Jogadas: {moves}</p>
-          {completed && <p className="text-lg mb-2">Tempo restante: {timeLeft}s</p>}
-          <p className="text-xl font-bold text-green-600 mb-6">+{totalPoints} pontos ganhos! 🎉</p>
-          
+          {completed && (
+            <p className="text-lg mb-2">Tempo restante: {timeLeft}s</p>
+          )}
+          <p className="text-xl font-bold text-green-600 mb-6">
+            +{totalPoints} pontos ganhos! 🎉
+          </p>
+
           <div className="space-y-3">
             <Button
               onClick={resetGame}
@@ -144,7 +154,7 @@ const MemoryGame = () => {
               🔄 Jogar Novamente
             </Button>
             <Button
-              onClick={() => navigate('/lobby')}
+              onClick={() => navigate("/lobby")}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
             >
               🎪 Voltar ao Lobby
@@ -163,14 +173,20 @@ const MemoryGame = () => {
             <div className="text-sm text-gray-600">
               Pares: {matches}/{symbols.length} | Jogadas: {moves}
             </div>
-            <div className={`text-lg font-bold ${timeLeft <= 10 ? 'text-red-500' : 'text-green-500'}`}>
+            <div
+              className={`text-lg font-bold ${
+                timeLeft <= 10 ? "text-red-500" : "text-green-500"
+              }`}
+            >
               ⏰ {timeLeft}s
             </div>
           </div>
 
           <div className="text-center mb-4">
             <div className="text-4xl mb-2">🧠</div>
-            <h3 className="text-lg font-bold text-gray-800">Jogo da Memória Junino</h3>
+            <h3 className="text-lg font-bold text-gray-800">
+              Jogo da Memória Junino
+            </h3>
           </div>
 
           <div className="grid grid-cols-4 gap-2 mb-4">
@@ -181,13 +197,15 @@ const MemoryGame = () => {
                 className={`aspect-square rounded-xl border-2 text-2xl font-bold transition-all transform ${
                   card.isFlipped || card.isMatched
                     ? card.isMatched
-                      ? 'bg-green-100 border-green-500 scale-95'
-                      : 'bg-yellow-100 border-orange-500'
-                    : 'bg-gradient-to-br from-orange-200 to-yellow-200 border-orange-300 hover:scale-105 hover:shadow-lg'
+                      ? "bg-green-100 border-green-500 scale-95"
+                      : "bg-yellow-100 border-orange-500"
+                    : "bg-gradient-to-br from-orange-200 to-yellow-200 border-orange-300 hover:scale-105 hover:shadow-lg"
                 }`}
-                disabled={card.isFlipped || card.isMatched || flippedCards.length === 2}
+                disabled={
+                  card.isFlipped || card.isMatched || flippedCards.length === 2
+                }
               >
-                {card.isFlipped || card.isMatched ? card.symbol : '❓'}
+                {card.isFlipped || card.isMatched ? card.symbol : "❓"}
               </button>
             ))}
           </div>
