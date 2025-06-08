@@ -1,17 +1,22 @@
-
-import { useGame } from '@/contexts/GameContext';
+import { useAuth } from "@/contexts/AuthContext";
+import { useGame } from "@/contexts/GameContext";
+import { useToast } from "@/hooks/use-toast";
+import { useUserData } from "@/hooks/useUserData";
 
 const PointsDisplay = () => {
-  const { points, level, nickname, avatar, getStreak } = useGame();
+  const { user, isAuthenticated, logout } = useAuth();
+  const { toast } = useToast();
+  const { data: userData, error, refetch } = useUserData();
+
+  const { points, avatar, getStreak } = useGame();
   const streak = getStreak();
-  const pointsForNextLevel = (level * 100) - points;
   const progressPercentage = ((points % 100) / 100) * 100;
 
   return (
     <div className="glass-effect-ultra rounded-xl lg:rounded-2xl xl:rounded-3xl p-4 lg:p-6 xl:p-8 mb-4 lg:mb-6 xl:mb-8 shadow-xl border border-festa-border/50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 festa-texture opacity-10" />
-      
+
       {/* Subtle Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(6)].map((_, i) => (
@@ -22,7 +27,7 @@ const PointsDisplay = () => {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
+              animationDuration: `${3 + Math.random() * 2}s`,
             }}
           />
         ))}
@@ -37,10 +42,10 @@ const PointsDisplay = () => {
             </div>
             <div className="text-center lg:text-left">
               <span className="font-festa text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-festa-text block">
-                {nickname}
+                {userData?.username ?? ""}
               </span>
               <div className="text-xs lg:text-sm xl:text-base text-festa-text-light font-medium">
-                Festeiro Nível {level} ⭐
+                Festeiro Nível {userData?.level ?? 0} ⭐
               </div>
             </div>
           </div>
@@ -48,22 +53,16 @@ const PointsDisplay = () => {
             <div className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-festa font-bold bg-gradient-to-r from-festa-accent to-festa-secondary bg-clip-text text-transparent">
               {points} XP
             </div>
-            <div className="text-xs lg:text-sm text-festa-text-muted font-medium">Energia da festa</div>
+            <div className="text-xs lg:text-sm text-festa-text-muted font-medium">
+              Energia da festa
+            </div>
           </div>
         </div>
-        
+
         {/* Progress Bar */}
         <div className="mb-4 lg:mb-6 xl:mb-8">
-          <div className="flex justify-between text-xs lg:text-sm xl:text-base text-festa-text-light mb-2 lg:mb-3">
-            <span className="font-medium flex items-center">
-              🎯 <span className="ml-1 lg:ml-2">Progresso para o próximo nível</span>
-            </span>
-            <span className="font-semibold text-festa-accent bg-festa-accent/10 px-2 lg:px-3 py-1 rounded-full border border-festa-accent/20 text-xs lg:text-sm">
-              {pointsForNextLevel} XP restantes
-            </span>
-          </div>
           <div className="relative w-full bg-festa-surface/50 rounded-full h-3 lg:h-4 xl:h-5 overflow-hidden border border-festa-border/30">
-            <div 
+            <div
               className="bg-gradient-to-r from-festa-accent to-festa-secondary h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
               style={{ width: `${progressPercentage}%` }}
             >
@@ -76,7 +75,9 @@ const PointsDisplay = () => {
         {streak > 0 && (
           <div className="flex items-center justify-center space-x-3 lg:space-x-4 bg-gradient-to-r from-festa-warning/15 to-festa-accent/15 rounded-xl lg:rounded-2xl p-3 lg:p-4 xl:p-6 border border-festa-accent/30 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-festa-warning/5 to-festa-accent/5 animate-shimmer"></div>
-            <div className="text-2xl lg:text-3xl xl:text-4xl animate-bounce relative z-10">🔥</div>
+            <div className="text-2xl lg:text-3xl xl:text-4xl animate-bounce relative z-10">
+              🔥
+            </div>
             <div className="relative z-10 text-center lg:text-left">
               <span className="text-festa-text font-festa text-base lg:text-lg xl:text-xl 2xl:text-2xl font-bold block">
                 {streak} sequência!
