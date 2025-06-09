@@ -27,12 +27,18 @@ export const useUser = (id?: string) => {
   return query;
 };
 
-export const useUpdateUserXp = () => {
+export const useUpdateUserCoins = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId, xpToAdd }: { userId: string; xpToAdd: number }) => {
-      return userDataService.updateXp(userId, xpToAdd);
+    mutationFn: ({
+      userId,
+      coinsToAdd,
+    }: {
+      userId: string;
+      coinsToAdd: number;
+    }) => {
+      return userDataService.updateCoins(userId, coinsToAdd);
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["user", variables.userId] });

@@ -29,9 +29,8 @@ export const API_ENDPOINTS = {
   user: (id: string) => `${API_BASE_URL}/users/${id}`,
   userLogin: `${API_BASE_URL}/users/login`,
   userRegister: `${API_BASE_URL}/users/register`,
-  progress: (id: string) => `${API_BASE_URL}/user/${id}/progress`,
-  achievements: (id: string) => `${API_BASE_URL}/user/${id}/achievements`,
-  xp: (id: string) => `${API_BASE_URL}/user/${id}/xp`,
+  coins: (id: string) => `${API_BASE_URL}/users/${id}/coins`,
+  vouchers: `${API_BASE_URL}/vouchers/generate`,
 };
 
 const DEFAULT_HEADERS = {
@@ -226,56 +225,33 @@ export const api = {
   },
 
   user: {
-    updateProgress: async (userId: string, lessonId: string) => {
+    updateCoins: async (userId: string, coinsToAdd: number) => {
       try {
         if (!userId) {
           throw new Error("Invalid ID format");
         }
 
-        const url = API_ENDPOINTS.progress(userId);
+        const url = API_ENDPOINTS.coins(userId);
+
+        const response = await apiFetch(url, {
+          method: "PUT",
+          body: JSON.stringify({ amount: coinsToAdd }),
+        });
+
+        return response;
+      } catch (error) {
+        console.error(`Error updating item:`, error);
+        throw error;
+      }
+    },
+
+    generateVoucher: async (cpf: string, email: string, type: string) => {
+      try {
+        const url = API_ENDPOINTS.vouchers;
 
         const response = await apiFetch(url, {
           method: "POST",
-          body: JSON.stringify({ lessonId }),
-        });
-
-        return response;
-      } catch (error) {
-        console.error(`Error updating item:`, error);
-        throw error;
-      }
-    },
-
-    updateAchievements: async (userId: string, achievementId: string) => {
-      try {
-        if (!userId) {
-          throw new Error("Invalid ID format");
-        }
-
-        const url = API_ENDPOINTS.achievements(userId);
-
-        const response = await apiFetch(url, {
-          method: "PUT",
-          body: JSON.stringify({ achievementId }),
-        });
-
-        return response;
-      } catch (error) {
-        console.error(`Error updating item:`, error);
-        throw error;
-      }
-    },
-    updateXp: async (userId: string, xpToAdd: number) => {
-      try {
-        if (!userId) {
-          throw new Error("Invalid ID format");
-        }
-
-        const url = API_ENDPOINTS.xp(userId);
-
-        const response = await apiFetch(url, {
-          method: "PUT",
-          body: JSON.stringify({ amount: xpToAdd }),
+          body: JSON.stringify({ cpf: cpf, email: email, type: type }),
         });
 
         return response;

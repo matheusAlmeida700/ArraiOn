@@ -25,10 +25,8 @@ export const userService = {
 };
 
 export const userDataService = {
-  updateProgress: (id: string, lessonId: string) =>
-    api.user.updateProgress(id, lessonId),
-  updateAchievements: (userId: string, achievementId: string) =>
-    api.user.updateAchievements(userId, achievementId),
-  updateXp: (userId: string, xpToAdd: number) =>
-    api.user.updateXp(userId, xpToAdd),
+  updateCoins: (userId: string, coinsToAdd: number) =>
+    api.user.updateCoins(userId, coinsToAdd),
+  generateVoucher: (cpf: string, email: string, type: string) =>
+    api.user.generateVoucher(cpf, email, type),
 };

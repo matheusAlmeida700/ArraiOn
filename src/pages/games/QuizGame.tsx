@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/contexts/GameContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { userDataService } from "@/services/api";
 
 const questions = [
   {
@@ -37,6 +39,7 @@ const questions = [
 ];
 
 const QuizGame = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -51,7 +54,7 @@ const QuizGame = () => {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && !showResult) {
-      handleAnswer(-1); // Time's up, wrong answer
+      handleAnswer(-1);
     }
   }, [timeLeft, showResult, gameEnded]);
 
@@ -76,8 +79,11 @@ const QuizGame = () => {
       } else {
         setGameEnded(true);
         const finalPoints = score + (isCorrect ? 1 : 0);
-        const earnedPoints = finalPoints * 6; // 6 points per correct answer
+        const earnedPoints = finalPoints * 6;
         addPoints(earnedPoints);
+        if (user) {
+          userDataService.updateCoins(user.id, earnedPoints);
+        }
       }
     }, 2000);
   };

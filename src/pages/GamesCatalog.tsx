@@ -151,7 +151,7 @@ const GamesCatalog = () => {
           }`}
           style={{
             backgroundImage:
-              "linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(236, 72, 153, 0.8)), url(https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1200)",
+              "linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(236, 72, 153, 0.3)), url(https://assets.multiplan.com.br/Multiplan/filer_public/c7/dd/c7dd4766-15e0-43fc-8dfd-9f40215a2b97/dicas-de-como-fazer-uma-festa-junina.jpg?ims=1920x)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -172,7 +172,7 @@ const GamesCatalog = () => {
               isLoaded ? "animate-slide-up" : "opacity-0"
             }`}
           >
-            <div className="glass-effect-strong rounded-2xl lg:rounded-3xl p-6 lg:p-8 border-2 border-purple-300/40">
+            <div className="glass-effect-strong rounded-2xl lg:rounded-3xl px-6 lg:px-8 border-2 border-purple-300/40">
               <h3 className="font-festa text-xl lg:text-3xl font-bold mb-6 text-purple-200 flex items-center">
                 🎯 <span className="ml-3">Categoria</span>
               </h3>
@@ -199,7 +199,7 @@ const GamesCatalog = () => {
               isLoaded ? "animate-slide-up" : "opacity-0"
             }`}
           >
-            <div className="glass-effect-strong rounded-2xl lg:rounded-3xl p-6 lg:p-8 border-2 border-indigo-300/40">
+            <div className="glass-effect-strong rounded-2xl lg:rounded-3xl px-6 lg:px-8 border-2 border-indigo-300/40">
               <h3 className="font-festa text-xl lg:text-3xl font-bold mb-6 text-indigo-200 flex items-center">
                 ⚡ <span className="ml-3">Dificuldade</span>
               </h3>

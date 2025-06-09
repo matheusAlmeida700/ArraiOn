@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { queryClient } from "@/services/apiClient";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,9 +32,9 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // if (isAuthenticated) {
-  //   return <Navigate to="/games" />;
-  // }
+  if (isAuthenticated) {
+    return <Navigate to="/games" />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +44,7 @@ const Auth = () => {
     try {
       if (activeTab === "login") {
         await login(formData.email, formData.password);
+        await queryClient.invalidateQueries({ queryKey: ["userData"] });
         navigate("/games");
       } else {
         if (!formData.username || formData.username.trim() === "") {

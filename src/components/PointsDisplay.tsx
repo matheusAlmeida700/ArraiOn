@@ -4,8 +4,12 @@ import { useUserData } from "@/hooks/useUserData";
 const PointsDisplay = () => {
   const { data: userData, error, refetch } = useUserData();
 
-  const { points, avatar } = useGame();
-  const progressPercentage = ((points % 100) / 100) * 100;
+  const { avatar } = useGame();
+  const progressPercentage = ((userData?.xp % 100) / 100) * 100;
+
+  if (!userData) {
+    return <div className="text-center py-4">Carregando dados...</div>;
+  }
 
   return (
     <div className="glass-effect-ultra rounded-xl lg:rounded-2xl xl:rounded-3xl p-4 lg:p-6 xl:p-8 mb-4 lg:mb-6 xl:mb-8 shadow-xl border border-festa-border/50 relative overflow-hidden">
@@ -20,13 +24,13 @@ const PointsDisplay = () => {
                 {userData?.username ?? ""}
               </span>
               <div className="text-xs lg:text-sm xl:text-base text-festa-text-light font-medium">
-                Festeiro Nível {userData?.level ?? 0} ⭐
+                Nível {userData?.level ?? 0} ⭐
               </div>
             </div>
           </div>
           <div className="text-center lg:text-right">
             <div className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-festa font-bold bg-gradient-to-r from-festa-accent to-festa-secondary bg-clip-text text-transparent">
-              {points} XP
+              {userData?.coins} Moedas
             </div>
             <div className="text-xs lg:text-sm text-festa-text-muted font-medium">
               Energia da festa

@@ -20,7 +20,7 @@ const featuredGames = [
     emoji: "🧠",
     xp: "15-25 XP",
     description: "Encontre os pares das tradições juninas",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400",
   },
   {
     id: "reaction",
@@ -81,7 +81,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen festa-bg text-festa-text overflow-hidden relative">
+    <div className="min-h-screen festa-bg text-festa-text overflow-hidden relative pt-12">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
         <div
@@ -199,14 +199,6 @@ const Index = () => {
             </div>
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden lg:block">
-          <div className="text-festa-text-muted text-center">
-            <div className="text-xl lg:text-2xl mb-1">↓</div>
-            <p className="text-xs lg:text-sm">Explore mais</p>
-          </div>
-        </div>
       </div>
 
       {/* Featured Games Section */}
@@ -225,9 +217,8 @@ const Index = () => {
             {featuredGames.map((game, index) => (
               <div
                 key={game.id}
-                className={`group glass-effect-strong rounded-xl lg:rounded-2xl border border-festa-border/30 overflow-hidden hover-lift cursor-pointer animate-slide-up`}
+                className={`group glass-effect-strong rounded-xl lg:rounded-2xl border border-festa-border/30 overflow-hidden hover-lift animate-slide-up`}
                 style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => navigate(`/games/${game.id}`)}
               >
                 <div
                   className="h-40 lg:h-48 xl:h-56 relative overflow-hidden bg-festa-surface"

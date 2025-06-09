@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/contexts/GameContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { userDataService } from "@/services/api";
 
 const symbols = ["🌽", "🎪", "🔥", "🎭", "🎵", "⭐", "🎯", "🏆"];
 
 const MemoryGame = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();
   const [cards, setCards] = useState<
@@ -97,6 +100,9 @@ const MemoryGame = () => {
     const timeBonus = completed ? Math.max(0, timeLeft) : 0;
     const totalPoints = basePoints + timeBonus;
     addPoints(totalPoints);
+    if (user) {
+      userDataService.updateCoins(user.id, totalPoints);
+    }
   };
 
   const flipCard = (id: number) => {
@@ -154,7 +160,7 @@ const MemoryGame = () => {
               🔄 Jogar Novamente
             </Button>
             <Button
-              onClick={() => navigate("/lobby")}
+              onClick={() => navigate("/games")}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
             >
               🎪 Voltar ao Lobby
