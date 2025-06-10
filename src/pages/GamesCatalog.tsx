@@ -15,8 +15,8 @@ const games = [
     status: "available",
     thumbnail: "🎓📚",
     playTime: "2-3 min",
-    gradient: "from-blue-500 to-purple-600",
-    image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=600",
+    gradient: "from-yellow-700 to-red-600",
+    imageUrl: "",
     popularity: 95,
   },
   {
@@ -140,7 +140,7 @@ const GamesCatalog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-700 text-white">
+    <div className="min-h-screen bg-[#ffd390] text-[#5e1c00]">
       <div className="max-w-7xl mx-auto p-4 lg:p-8">
         <PointsDisplay />
 
@@ -173,7 +173,7 @@ const GamesCatalog = () => {
             }`}
           >
             <div className="glass-effect-strong rounded-2xl lg:rounded-3xl px-6 lg:px-8 border-2 border-purple-300/40">
-              <h3 className="font-festa text-xl lg:text-3xl font-bold mb-6 text-purple-200 flex items-center">
+              <h3 className="font-festa text-xl lg:text-3xl font-bold mb-6 text-orange-800 flex items-center">
                 🎯 <span className="ml-3">Categoria</span>
               </h3>
               <div className="flex flex-wrap gap-3 lg:gap-4">
@@ -183,8 +183,8 @@ const GamesCatalog = () => {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 lg:px-8 py-3 lg:py-4 rounded-2xl lg:rounded-3xl text-sm lg:text-lg font-bold transition-all duration-300 hover:scale-105 ${
                       selectedCategory === category
-                        ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg neon-glow"
-                        : "glass-effect text-purple-200 hover:bg-white/20 border border-purple-400/30"
+                        ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg neon-glow"
+                        : "glass-effect text-black-300 hover:bg-white/20 border border-purple-400/30"
                     }`}
                   >
                     {category}
@@ -200,7 +200,7 @@ const GamesCatalog = () => {
             }`}
           >
             <div className="glass-effect-strong rounded-2xl lg:rounded-3xl px-6 lg:px-8 border-2 border-indigo-300/40">
-              <h3 className="font-festa text-xl lg:text-3xl font-bold mb-6 text-indigo-200 flex items-center">
+              <h3 className="font-festa text-xl lg:text-3xl font-bold mb-6 text-[#5e1c00] flex items-center">
                 ⚡ <span className="ml-3">Dificuldade</span>
               </h3>
               <div className="flex flex-wrap gap-3 lg:gap-4">
@@ -259,7 +259,7 @@ const GamesCatalog = () => {
                   {game.icon}
                 </div>
 
-                {/* XP Badge */}
+                {/* caixa de XP */}
                 <div className="absolute bottom-4 left-4">
                   <div className="inline-flex items-center px-3 lg:px-4 py-2 bg-gradient-to-r from-purple-500/40 to-pink-500/40 rounded-full border border-purple-400/50 backdrop-blur-sm">
                     <span className="text-yellow-300 font-bold text-sm lg:text-base">
@@ -296,16 +296,16 @@ const GamesCatalog = () => {
                     </span>
                   </div>
                 </div>
-
+                      {/* descrição dos jogos */}
                 <p className="text-purple-200 text-sm lg:text-base mb-6 leading-relaxed">
                   {game.description}
                 </p>
-
+                      {/* botoes de categorias dos jogos */}
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-sm lg:text-base px-3 py-2 bg-purple-500/30 rounded-full text-purple-200 border border-purple-400/40 font-medium">
+                  <span className="text-sm lg:text-base px-3 py-2 bg-purple-600/30 rounded-full text-purple-200 border border-purple-400/40 font-medium">
                     📂 {game.category}
                   </span>
-                  <span className="text-sm lg:text-base text-purple-300 font-medium">
+                  <span className="text-sm lg:text-base text-purple-400 font-medium">
                     ⏱️ {game.playTime}
                   </span>
                 </div>

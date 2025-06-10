@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/contexts/GameContext";
+import DecorativeBanner from "@/components/DecorativeBanner";
+import SiteHeader from "@/components/SiteHeader";
+import Carousel from "@/components/Carousel";
+import CurvedSection from "@/components/CurvedSection";
 
 const avatars = ["🌽", "🎪", "🎭", "🔥", "🎵", "⭐", "🎯", "🏆"];
 
@@ -81,125 +85,23 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen festa-bg text-festa-text overflow-hidden relative pt-12">
-      {/* Background Decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-        <div
-          className="absolute top-20 left-10 lg:top-32 lg:left-20 text-4xl lg:text-6xl opacity-40 animate-float"
-          style={{ transform: `translateY(${scrollY * 0.05}px)` }}
-        >
-          🎪
-        </div>
-        <div
-          className="absolute top-1/3 right-10 lg:right-20 text-3xl lg:text-5xl opacity-30 animate-bounce-gentle"
-          style={{
-            transform: `translateY(${scrollY * 0.08}px)`,
-            animationDelay: "1s",
-          }}
-        >
-          🌽
-        </div>
-        <div
-          className="absolute bottom-1/3 left-10 lg:left-20 text-3xl lg:text-5xl opacity-35 animate-float"
-          style={{
-            transform: `translateY(${scrollY * 0.03}px)`,
-            animationDelay: "2s",
-          }}
-        >
-          🔥
-        </div>
-        <div
-          className="absolute top-1/2 right-1/4 text-2xl lg:text-4xl opacity-25 animate-bounce-gentle"
-          style={{
-            transform: `translateY(${scrollY * 0.06}px)`,
-            animationDelay: "3s",
-          }}
-        >
-          🎭
+    <div className="min-h-screen festa-bg text-festa-text overflow-hidden relative">
+    {/* Decorative top banner */}
+      <DecorativeBanner />
+      
+      {/* Main content area */}
+      <div className="container mx-auto px-4 py-8">
+        {/* Site header with title and icons */}
+        <SiteHeader />
+        
+        {/* Main carousel section */}
+        <div className="mb-16">
+          <Carousel />
         </div>
       </div>
-
-      {/* Hero Section */}
-      <div className="hero-banner min-h-screen flex items-center justify-center px-4 lg:px-8 xl:px-12">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-center">
-            {/* Left Column - Content */}
-            <div
-              className={`space-y-6 lg:space-y-8 xl:space-y-12 transition-all duration-1000 ${
-                isLoaded ? "animate-slide-up" : "opacity-0"
-              }`}
-            >
-              <div className="space-y-4 lg:space-y-6">
-                <div className="inline-flex items-center px-4 py-2 bg-festa-accent/10 border border-festa-accent/30 rounded-full backdrop-blur-sm">
-                  <span className="text-festa-accent font-medium text-sm lg:text-base">
-                    🎉 Festa Junina 2024
-                  </span>
-                </div>
-
-                <h1 className="font-festa text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-festa-text leading-tight">
-                  Transforme sua espera em{" "}
-                  <span className="bg-gradient-to-r from-festa-accent via-festa-secondary to-festa-primary bg-clip-text text-transparent">
-                    diversão
-                  </span>
-                </h1>
-
-                <p className="text-base lg:text-lg xl:text-xl text-festa-text-light leading-relaxed max-w-2xl">
-                  Jogue, ganhe pontos e troque por prêmios reais enquanto
-                  aproveita a festa junina. Uma experiência única que torna cada
-                  momento especial.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 pt-2">
-                <Button
-                  onClick={handleEnterFesta}
-                  className="festa-button text-white font-festa font-semibold py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-base lg:text-lg shadow-lg"
-                >
-                  🎪 Entrar na Festa!
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => navigate("/games")}
-                  className="border-festa-border bg-festa-surface/50 hover:bg-festa-surface text-festa-text font-medium py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-base lg:text-lg backdrop-blur-sm"
-                >
-                  Ver Jogos
-                </Button>
-              </div>
-
-              <div className="flex items-center gap-4 lg:gap-6 pt-2 lg:pt-4">
-                <div className="flex -space-x-2">
-                  {avatars.slice(0, 4).map((emoji, index) => (
-                    <div
-                      key={emoji}
-                      className="w-8 h-8 lg:w-10 lg:h-10 bg-festa-surface border-2 border-festa-border rounded-full flex items-center justify-center text-sm lg:text-base"
-                      style={{ zIndex: 4 - index }}
-                    >
-                      {emoji}
-                    </div>
-                  ))}
-                </div>
-                <div className="text-festa-text-muted text-sm lg:text-base">
-                  <span className="font-semibold text-festa-text">500+</span>{" "}
-                  jogadores ativos
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column - Registration Form */}
-            <div
-              className={`transition-all duration-1000 delay-300 ${
-                isLoaded ? "animate-scale-in" : "opacity-0"
-              }`}
-            >
-              <img
-                className="rounded-xl"
-                src="https://blog.staycharlie.com.br/wp-content/uploads/2025/06/festa-junina.jpg"
-                alt="Festa Junina"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      
+      {/* Curved bottom section */}
+      <CurvedSection />
 
       {/* Featured Games Section */}
       <section className="py-12 lg:py-16 xl:py-20 px-4 lg:px-8 xl:px-12 bg-festa-surface/30 backdrop-blur-sm relative">

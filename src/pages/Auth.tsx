@@ -100,28 +100,28 @@ const Auth = () => {
     <div className="min-h-screen festa-bg relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute top-20 left-10 text-6xl opacity-20 animate-float"
+          className="absolute top-20 left-10 opacity-20 animate-float w-32"
           style={{ animationDelay: "0s" }}
         >
-          🎪
+        <img src="/login/login1.png" alt="" />/
         </div>
         <div
           className="absolute top-1/3 right-20 text-5xl opacity-15 animate-bounce-gentle"
           style={{ animationDelay: "1s" }}
         >
-          🌽
+        
         </div>
         <div
           className="absolute bottom-1/4 left-20 text-4xl opacity-25 animate-float"
           style={{ animationDelay: "2s" }}
         >
-          🔥
+        
         </div>
         <div
           className="absolute bottom-20 right-10 text-5xl opacity-20 animate-bounce-gentle"
           style={{ animationDelay: "3s" }}
         >
-          🎭
+        
         </div>
       </div>
 
