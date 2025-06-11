@@ -6,6 +6,7 @@ import { useGame } from "@/contexts/GameContext";
 import { useUserData } from "@/hooks/useUserData";
 import { userDataService } from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const rewards = [
   {
@@ -84,6 +85,7 @@ const rewards = [
 
 const RewardStore = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   console.log(user);
 
   const { data: userData } = useUserData();
@@ -128,10 +130,16 @@ const RewardStore = () => {
         reward.type.toUpperCase()
       );
       setRedeemedRewards((prev) => [...prev, reward.id]);
-      alert(`Voucher gerado com sucesso para ${reward.type}!`);
+      toast({
+        title: "Voucher gerado com sucesso",
+        description: "O código foi enviado ao seu e-mail!",
+      });
     } catch (err) {
-      alert("Erro ao gerar voucher. Tente novamente.");
-      console.error(err);
+      toast({
+        title: "Erro ao gerar voucher",
+        description: "Tente novamente!",
+        variant: "destructive",
+      });
     }
   };
 
