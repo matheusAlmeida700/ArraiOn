@@ -1,14 +1,5 @@
-import { QueryClient } from "@tanstack/react-query";
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60000,
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+import { QueryClient } from "@tanstack/react-query";
 
 export class ApiError extends Error {
   status: number;
@@ -100,14 +91,6 @@ async function apiFetch<T = any>(
     clearTimeout(timeoutId);
   }
 }
-
-const invalidateQueries = (queryKey: string | string[], id?: string) => {
-  if (id) {
-    queryClient.invalidateQueries({ queryKey: [queryKey, id] });
-  } else {
-    queryClient.invalidateQueries({ queryKey: [queryKey] });
-  }
-};
 
 export const api = {
   getAll: async () => {
