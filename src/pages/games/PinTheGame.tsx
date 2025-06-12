@@ -1,10 +1,12 @@
-
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { useGame } from '@/contexts/GameContext';
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useGame } from "@/contexts/GameContext";
+import { userDataService } from "@/services/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 const PinTheGame = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();
   const [shots, setShots] = useState(0);
@@ -22,23 +24,25 @@ const PinTheGame = () => {
     const centerY = rect.height / 2;
     const clickX = event.clientX - rect.left;
     const clickY = event.clientY - rect.top;
-    
-    const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - centerY, 2));
+
+    const distance = Math.sqrt(
+      Math.pow(clickX - centerX, 2) + Math.pow(clickY - centerY, 2)
+    );
     const maxDistance = Math.min(centerX, centerY);
-    
+
     let points = 0;
-    if (distance <= maxDistance * 0.2) { // Bull's eye (20% of radius)
+    if (distance <= maxDistance * 0.2) {
       points = 50;
       incrementStreak();
-    } else if (distance <= maxDistance * 0.4) { // Inner ring (40% of radius)
+    } else if (distance <= maxDistance * 0.4) {
       points = 30;
       incrementStreak();
-    } else if (distance <= maxDistance * 0.6) { // Middle ring (60% of radius)
+    } else if (distance <= maxDistance * 0.6) {
       points = 20;
       incrementStreak();
-    } else if (distance <= maxDistance * 0.8) { // Outer ring (80% of radius)
+    } else if (distance <= maxDistance * 0.8) {
       points = 10;
-    } else if (distance <= maxDistance) { // Edge (100% of radius)
+    } else if (distance <= maxDistance) {
       points = 5;
     } else {
       points = 0;
@@ -46,20 +50,20 @@ const PinTheGame = () => {
     }
 
     setLastShotScore(points);
-    setScore(prev => prev + points);
-    setShots(prev => prev + 1);
+    setScore((prev) => prev + points);
+    setShots((prev) => prev + 1);
 
-    // Create visual feedback
-    const dot = document.createElement('div');
-    dot.style.position = 'absolute';
+    const dot = document.createElement("div");
+    dot.style.position = "absolute";
     dot.style.left = `${clickX - 5}px`;
     dot.style.top = `${clickY - 5}px`;
-    dot.style.width = '10px';
-    dot.style.height = '10px';
-    dot.style.borderRadius = '50%';
-    dot.style.backgroundColor = points > 30 ? '#ef4444' : points > 10 ? '#f97316' : '#eab308';
-    dot.style.pointerEvents = 'none';
-    dot.style.zIndex = '10';
+    dot.style.width = "10px";
+    dot.style.height = "10px";
+    dot.style.borderRadius = "50%";
+    dot.style.backgroundColor =
+      points > 30 ? "#ef4444" : points > 10 ? "#f97316" : "#eab308";
+    dot.style.pointerEvents = "none";
+    dot.style.zIndex = "10";
     event.currentTarget.appendChild(dot);
 
     if (shots + 1 >= totalShots) {
@@ -67,6 +71,9 @@ const PinTheGame = () => {
         setGameEnded(true);
         addPoints(score + points);
       }, 1000);
+      if (user) {
+        userDataService.updateCoins(user.id, points);
+      }
     }
   };
 
@@ -75,10 +82,11 @@ const PinTheGame = () => {
     setScore(0);
     setGameEnded(false);
     setLastShotScore(null);
-    // Clear all shot markers
     if (targetRef.current) {
-      const dots = targetRef.current.querySelectorAll('div[style*="position: absolute"]');
-      dots.forEach(dot => dot.remove());
+      const dots = targetRef.current.querySelectorAll(
+        'div[style*="position: absolute"]'
+      );
+      dots.forEach((dot) => dot.remove());
     }
   };
 
@@ -87,11 +95,17 @@ const PinTheGame = () => {
       <div className="min-h-screen bg-gradient-to-br from-orange-400 via-red-500 to-yellow-500 p-4 flex items-center justify-center">
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full shadow-lg border-2 border-yellow-300 text-center">
           <div className="text-6xl mb-4">🎯</div>
-          <h2 className="text-2xl font-bold text-orange-600 mb-4">Tiro ao Alvo Finalizado!</h2>
-          <p className="text-lg mb-2">Tiros: {shots}/{totalShots}</p>
+          <h2 className="text-2xl font-bold text-orange-600 mb-4">
+            Tiro ao Alvo Finalizado!
+          </h2>
+          <p className="text-lg mb-2">
+            Tiros: {shots}/{totalShots}
+          </p>
           <p className="text-lg mb-2">Pontuação total: {score}</p>
-          <p className="text-xl font-bold text-green-600 mb-6">+{score} pontos ganhos! 🎉</p>
-          
+          <p className="text-xl font-bold text-green-600 mb-6">
+            +{score} pontos ganhos! 🎉
+          </p>
+
           <div className="space-y-3">
             <Button
               onClick={resetGame}
@@ -100,7 +114,7 @@ const PinTheGame = () => {
               🔄 Jogar Novamente
             </Button>
             <Button
-              onClick={() => navigate('/lobby')}
+              onClick={() => navigate("/games")}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
             >
               🎪 Voltar ao Lobby
@@ -126,12 +140,16 @@ const PinTheGame = () => {
 
           <div className="text-center mb-6">
             <div className="text-4xl mb-2">🎯</div>
-            <h3 className="text-lg font-bold text-gray-800 mb-2">Acerte o Alvo!</h3>
-            <p className="text-sm text-gray-600">Clique o mais próximo do centro possível</p>
+            <h3 className="text-lg font-bold text-gray-800 mb-2">
+              Acerte o Alvo!
+            </h3>
+            <p className="text-sm text-gray-600">
+              Clique o mais próximo do centro possível
+            </p>
           </div>
 
           <div className="flex justify-center mb-6">
-            <div 
+            <div
               ref={targetRef}
               onClick={handleTargetClick}
               className="relative w-64 h-64 rounded-full border-4 border-gray-800 cursor-crosshair"
@@ -144,7 +162,7 @@ const PinTheGame = () => {
                     #22c55e 60%, #22c55e 80%, 
                     #3b82f6 80%, #3b82f6 100%
                   )
-                `
+                `,
               }}
             >
               <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg pointer-events-none">
@@ -157,11 +175,17 @@ const PinTheGame = () => {
             <div className="text-center mb-4">
               <p className="text-lg font-bold text-green-600">
                 +{lastShotScore} pontos!
-                {lastShotScore >= 50 ? ' 🎯 BULL\'S EYE!' : 
-                 lastShotScore >= 30 ? ' 🔥 Excelente!' :
-                 lastShotScore >= 20 ? ' 👍 Bom tiro!' :
-                 lastShotScore >= 10 ? ' 👌 No alvo!' :
-                 lastShotScore > 0 ? ' 📍 Quase!' : ' ❌ Errou!'}
+                {lastShotScore >= 50
+                  ? " 🎯 BULL'S EYE!"
+                  : lastShotScore >= 30
+                  ? " 🔥 Excelente!"
+                  : lastShotScore >= 20
+                  ? " 👍 Bom tiro!"
+                  : lastShotScore >= 10
+                  ? " 👌 No alvo!"
+                  : lastShotScore > 0
+                  ? " 📍 Quase!"
+                  : " ❌ Errou!"}
               </p>
             </div>
           )}

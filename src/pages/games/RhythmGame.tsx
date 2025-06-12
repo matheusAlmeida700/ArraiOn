@@ -1,10 +1,12 @@
-
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { useGame } from '@/contexts/GameContext';
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useGame } from "@/contexts/GameContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { userDataService } from "@/services/api";
 
 const RhythmGame = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();
   const [sequence, setSequence] = useState<number[]>([]);
@@ -13,13 +15,20 @@ const RhythmGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [highlightedButton, setHighlightedButton] = useState<number | null>(null);
+  const [highlightedButton, setHighlightedButton] = useState<number | null>(
+    null
+  );
 
   const buttons = [
-    { id: 0, color: 'bg-red-500', activeColor: 'bg-red-300', emoji: '🎵' },
-    { id: 1, color: 'bg-blue-500', activeColor: 'bg-blue-300', emoji: '🎶' },
-    { id: 2, color: 'bg-green-500', activeColor: 'bg-green-300', emoji: '🎼' },
-    { id: 3, color: 'bg-yellow-500', activeColor: 'bg-yellow-300', emoji: '🎤' }
+    { id: 0, color: "bg-red-500", activeColor: "bg-red-300", emoji: "🎵" },
+    { id: 1, color: "bg-blue-500", activeColor: "bg-blue-300", emoji: "🎶" },
+    { id: 2, color: "bg-green-500", activeColor: "bg-green-300", emoji: "🎼" },
+    {
+      id: 3,
+      color: "bg-yellow-500",
+      activeColor: "bg-yellow-300",
+      emoji: "🎤",
+    },
   ];
 
   useEffect(() => {
@@ -30,10 +39,12 @@ const RhythmGame = () => {
 
   useEffect(() => {
     if (userSequence.length === sequence.length && sequence.length > 0) {
-      const isCorrect = userSequence.every((btn, index) => btn === sequence[index]);
-      
+      const isCorrect = userSequence.every(
+        (btn, index) => btn === sequence[index]
+      );
+
       if (isCorrect) {
-        setScore(prev => prev + 1);
+        setScore((prev) => prev + 1);
         incrementStreak();
         setTimeout(() => {
           startNewRound();
@@ -56,14 +67,14 @@ const RhythmGame = () => {
 
   const displaySequence = async (seq: number[]) => {
     setDisplaying(true);
-    
+
     for (let i = 0; i < seq.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await new Promise((resolve) => setTimeout(resolve, 600));
       setHighlightedButton(seq[i]);
-      await new Promise(resolve => setTimeout(resolve, 400));
+      await new Promise((resolve) => setTimeout(resolve, 400));
       setHighlightedButton(null);
     }
-    
+
     setDisplaying(false);
   };
 
@@ -72,25 +83,26 @@ const RhythmGame = () => {
 
     const newUserSequence = [...userSequence, buttonId];
     setUserSequence(newUserSequence);
-    
-    // Check if this button is correct for current position
+
     if (buttonId !== sequence[currentIndex]) {
       resetStreak();
       endGame();
       return;
     }
-    
-    setCurrentIndex(prev => prev + 1);
-    
-    // Flash the button
+
+    setCurrentIndex((prev) => prev + 1);
+
     setHighlightedButton(buttonId);
     setTimeout(() => setHighlightedButton(null), 200);
   };
 
   const endGame = () => {
     setGameOver(true);
-    const earnedPoints = score * 5; // 5 points per correct sequence
+    const earnedPoints = score * 5;
     addPoints(earnedPoints);
+    if (user) {
+      userDataService.updateCoins(user.id, earnedPoints);
+    }
   };
 
   const resetGame = () => {
@@ -108,10 +120,14 @@ const RhythmGame = () => {
       <div className="min-h-screen bg-gradient-to-br from-orange-400 via-red-500 to-yellow-500 p-4 flex items-center justify-center">
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full shadow-lg border-2 border-yellow-300 text-center">
           <div className="text-6xl mb-4">🎵</div>
-          <h2 className="text-2xl font-bold text-orange-600 mb-4">Ritmo Finalizado!</h2>
+          <h2 className="text-2xl font-bold text-orange-600 mb-4">
+            Ritmo Finalizado!
+          </h2>
           <p className="text-lg mb-2">Você acertou {score} sequências!</p>
-          <p className="text-xl font-bold text-green-600 mb-6">+{score * 5} pontos ganhos! 🎉</p>
-          
+          <p className="text-xl font-bold text-green-600 mb-6">
+            +{score * 5} pontos ganhos! 🎉
+          </p>
+
           <div className="space-y-3">
             <Button
               onClick={resetGame}
@@ -120,7 +136,7 @@ const RhythmGame = () => {
               🔄 Jogar Novamente
             </Button>
             <Button
-              onClick={() => navigate('/lobby')}
+              onClick={() => navigate("/games")}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
             >
               🎪 Voltar ao Lobby
@@ -137,9 +153,11 @@ const RhythmGame = () => {
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg border-2 border-yellow-300">
           <div className="text-center mb-6">
             <div className="text-4xl mb-2">🎵</div>
-            <h3 className="text-lg font-bold text-gray-800 mb-2">Ritmo Forrozeiro</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-2">
+              Ritmo Forrozeiro
+            </h3>
             <p className="text-sm text-gray-600 mb-4">
-              {displaying ? 'Memorize a sequência...' : 'Repita a sequência!'}
+              {displaying ? "Memorize a sequência..." : "Repita a sequência!"}
             </p>
             <div className="text-lg font-bold text-orange-600">
               Sequência: {score} | Pontos: {score * 5}
@@ -154,11 +172,12 @@ const RhythmGame = () => {
                 disabled={displaying}
                 className={`
                   aspect-square rounded-2xl text-4xl font-bold transition-all transform border-4
-                  ${highlightedButton === button.id 
-                    ? `${button.activeColor} border-white scale-95 shadow-lg` 
-                    : `${button.color} border-gray-300 hover:scale-105 hover:shadow-lg`
+                  ${
+                    highlightedButton === button.id
+                      ? `${button.activeColor} border-white scale-95 shadow-lg`
+                      : `${button.color} border-gray-300 hover:scale-105 hover:shadow-lg`
                   }
-                  ${displaying ? 'cursor-not-allowed' : 'cursor-pointer'}
+                  ${displaying ? "cursor-not-allowed" : "cursor-pointer"}
                 `}
               >
                 {button.emoji}

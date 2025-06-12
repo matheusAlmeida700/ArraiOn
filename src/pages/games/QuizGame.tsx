@@ -40,6 +40,8 @@ const questions = [
 
 const QuizGame = () => {
   const { user } = useAuth();
+  console.log(user);
+
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -120,7 +122,7 @@ const QuizGame = () => {
               🔄 Jogar Novamente
             </Button>
             <Button
-              onClick={() => navigate("/lobby")}
+              onClick={() => navigate("/games")}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
             >
               🎪 Voltar ao Lobby

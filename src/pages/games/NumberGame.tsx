@@ -1,10 +1,12 @@
-
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { useGame } from '@/contexts/GameContext';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useGame } from "@/contexts/GameContext";
+import { userDataService } from "@/services/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 const NumberGame = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();
   const [drawnNumbers, setDrawnNumbers] = useState<number[]>([]);
@@ -36,15 +38,15 @@ const NumberGame = () => {
     const rows = [
       playerCard.slice(0, 5),
       playerCard.slice(5, 10),
-      playerCard.slice(10, 15)
+      playerCard.slice(10, 15),
     ];
-    
-    const hasFullRow = rows.some(row => 
-      row.every(num => markedNumbers.has(num))
+
+    const hasFullRow = rows.some((row) =>
+      row.every((num) => markedNumbers.has(num))
     );
-    
+
     if (hasFullRow && !gameEnded) {
-      endGame(true); // Bingo!
+      endGame(true);
     }
   }, [markedNumbers]);
 
@@ -73,8 +75,8 @@ const NumberGame = () => {
         do {
           newNumber = Math.floor(Math.random() * 75) + 1;
         } while (drawnNumbers.includes(newNumber));
-        
-        setDrawnNumbers(prev => [...prev, newNumber]);
+
+        setDrawnNumbers((prev) => [...prev, newNumber]);
         setCurrentNumber(newNumber);
         setIsDrawing(false);
       }, 1000);
@@ -85,8 +87,8 @@ const NumberGame = () => {
 
   const markNumber = (number: number) => {
     if (drawnNumbers.includes(number) && !markedNumbers.has(number)) {
-      setMarkedNumbers(prev => new Set([...prev, number]));
-      setScore(prev => prev + 5);
+      setMarkedNumbers((prev) => new Set([...prev, number]));
+      setScore((prev) => prev + 5);
       incrementStreak();
     }
   };
@@ -94,15 +96,17 @@ const NumberGame = () => {
   const endGame = (bingo = false) => {
     setGameEnded(true);
     let finalPoints = score;
-    
+
     if (bingo) {
-      finalPoints += 50; // Bonus for bingo
+      finalPoints += 50;
     }
-    
-    // Time bonus
+
     finalPoints += Math.max(0, timeLeft);
-    
+
     addPoints(finalPoints);
+    if (user) {
+      userDataService.updateCoins(user.id, finalPoints);
+    }
   };
 
   const resetGame = () => {
@@ -120,11 +124,13 @@ const NumberGame = () => {
   };
 
   if (gameEnded) {
-    const hadBingo = playerCard.length > 0 && [
-      playerCard.slice(0, 5),
-      playerCard.slice(5, 10),
-      playerCard.slice(10, 15)
-    ].some(row => row.every(num => markedNumbers.has(num)));
+    const hadBingo =
+      playerCard.length > 0 &&
+      [
+        playerCard.slice(0, 5),
+        playerCard.slice(5, 10),
+        playerCard.slice(10, 15),
+      ].some((row) => row.every((num) => markedNumbers.has(num)));
 
     const finalPoints = score + (hadBingo ? 50 : 0) + Math.max(0, timeLeft);
 
@@ -133,13 +139,19 @@ const NumberGame = () => {
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full shadow-lg border-2 border-yellow-300 text-center">
           <div className="text-6xl mb-4">🎲</div>
           <h2 className="text-2xl font-bold text-orange-600 mb-4">
-            {hadBingo ? 'BINGO! 🎉' : 'Jogo Finalizado!'}
+            {hadBingo ? "BINGO! 🎉" : "Jogo Finalizado!"}
           </h2>
           <p className="text-lg mb-2">Números marcados: {markedNumbers.size}</p>
-          {hadBingo && <p className="text-lg mb-2 text-green-600 font-bold">Linha completa! +50 pontos!</p>}
+          {hadBingo && (
+            <p className="text-lg mb-2 text-green-600 font-bold">
+              Linha completa! +50 pontos!
+            </p>
+          )}
           <p className="text-lg mb-2">Tempo restante: {timeLeft}s</p>
-          <p className="text-xl font-bold text-green-600 mb-6">+{finalPoints} pontos ganhos! 🎉</p>
-          
+          <p className="text-xl font-bold text-green-600 mb-6">
+            +{finalPoints} pontos ganhos! 🎉
+          </p>
+
           <div className="space-y-3">
             <Button
               onClick={resetGame}
@@ -148,7 +160,7 @@ const NumberGame = () => {
               🔄 Jogar Novamente
             </Button>
             <Button
-              onClick={() => navigate('/lobby')}
+              onClick={() => navigate("/games")}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
             >
               🎪 Voltar ao Lobby
@@ -167,25 +179,33 @@ const NumberGame = () => {
             <div className="text-sm text-gray-600">
               Marcados: {markedNumbers.size} | Pontos: {score}
             </div>
-            <div className={`text-lg font-bold ${timeLeft <= 10 ? 'text-red-500' : 'text-green-500'}`}>
+            <div
+              className={`text-lg font-bold ${
+                timeLeft <= 10 ? "text-red-500" : "text-green-500"
+              }`}
+            >
               ⏰ {timeLeft}s
             </div>
           </div>
 
           <div className="text-center mb-6">
             <div className="text-4xl mb-2">🎲</div>
-            <h3 className="text-lg font-bold text-gray-800 mb-2">Bingo Caipira</h3>
-            
+            <h3 className="text-lg font-bold text-gray-800 mb-2">
+              Bingo Caipira
+            </h3>
+
             <div className="bg-gradient-to-r from-red-100 to-orange-100 rounded-xl p-4 mb-4">
               <p className="text-sm text-gray-600 mb-2">Número atual:</p>
               <div className="text-4xl font-bold text-red-600">
-                {isDrawing ? '🎲' : currentNumber || '?'}
+                {isDrawing ? "🎲" : currentNumber || "?"}
               </div>
             </div>
           </div>
 
           <div className="mb-4">
-            <p className="text-sm text-gray-600 mb-2 text-center">Sua cartela (clique nos números sorteados):</p>
+            <p className="text-sm text-gray-600 mb-2 text-center">
+              Sua cartela (clique nos números sorteados):
+            </p>
             <div className="grid grid-cols-5 gap-1">
               {playerCard.map((number, index) => (
                 <button
@@ -193,14 +213,17 @@ const NumberGame = () => {
                   onClick={() => markNumber(number)}
                   className={`
                     aspect-square rounded-lg border-2 text-sm font-bold transition-all
-                    ${markedNumbers.has(number)
-                      ? 'bg-green-500 border-green-600 text-white scale-95'
-                      : drawnNumbers.includes(number)
-                      ? 'bg-yellow-100 border-yellow-500 text-yellow-700 hover:bg-yellow-200'
-                      : 'bg-gray-100 border-gray-300 text-gray-600'
+                    ${
+                      markedNumbers.has(number)
+                        ? "bg-green-500 border-green-600 text-white scale-95"
+                        : drawnNumbers.includes(number)
+                        ? "bg-yellow-100 border-yellow-500 text-yellow-700 hover:bg-yellow-200"
+                        : "bg-gray-100 border-gray-300 text-gray-600"
                     }
                   `}
-                  disabled={!drawnNumbers.includes(number) || markedNumbers.has(number)}
+                  disabled={
+                    !drawnNumbers.includes(number) || markedNumbers.has(number)
+                  }
                 >
                   {number}
                 </button>
@@ -210,7 +233,7 @@ const NumberGame = () => {
 
           <div className="text-center">
             <p className="text-xs text-gray-600 mb-2">
-              Números sorteados: {drawnNumbers.join(', ')}
+              Números sorteados: {drawnNumbers.join(", ")}
             </p>
             <p className="text-sm text-orange-600 font-bold">
               Complete uma linha para fazer BINGO! 🎯

@@ -7,7 +7,6 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import GamesCatalog from "./pages/GamesCatalog";
 import GameDetails from "./pages/GameDetails";
-import GameLobby from "./pages/GameLobby";
 import RewardStore from "./pages/RewardStore";
 import Leaderboard from "./pages/Leaderboard";
 import QuizGame from "./pages/games/QuizGame";
@@ -35,7 +34,6 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/games" element={<GamesCatalog />} />
               <Route path="/games/:gameId" element={<GameDetails />} />
-              <Route path="/lobby" element={<GameLobby />} />
               <Route path="/rewards" element={<RewardStore />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/play/quiz" element={<QuizGame />} />

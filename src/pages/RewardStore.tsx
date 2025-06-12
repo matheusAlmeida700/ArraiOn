@@ -11,75 +11,83 @@ import { useToast } from "@/hooks/use-toast";
 const rewards = [
   {
     id: 1,
-    name: "Canjica Doce",
-    description: "Uma deliciosa porção de canjica quentinha",
-    cost: 200,
-    emoji: "🥛",
-    category: "Comidas",
+    name: "Chapéu de Palha Virtual",
+    description:
+      "Deixa seu avatar no clima da roça com um chapéu arretado e cheio de estilo!",
+    cost: 50,
+    emoji: " 👒",
+    category: "Visual",
     type: "BRONZE",
   },
   {
     id: 2,
     name: "Pamonha",
-    description: "Pamonha tradicional feita na hora",
-    cost: 200,
+    description:
+      "Uma pamonha virtual pra saborear com os olhos e exibir no seu perfil do arraiá!",
+    cost: 100,
     emoji: "🌽",
     category: "Comidas",
     type: "BRONZE",
   },
   {
     id: 3,
-    name: "Quentão",
-    description: "Bebida quentinha para aquecer o coração",
-    cost: 200,
-    emoji: "🍵",
-    category: "Bebidas",
+    name: "Sticker “É São João, sô!” ",
+    description:
+      "Um adesivo divertido pra animar seu perfil e mandar pros amigos na hora do forró!",
+    cost: 80,
+    emoji: " 🎉",
+    category: "Comunicação",
     type: "BRONZE",
   },
   {
     id: 4,
-    name: "Refrigerante",
-    description: "Refrigerante gelado",
+    name: "Trilha Sonora do Arraiá ",
+    description:
+      "Ativa sons típicos juninos nos jogos e menus pra deixar tudo no ritmo da festa!",
     cost: 200,
-    emoji: "🥤",
-    category: "Bebidas",
-    type: "BRONZE",
+    emoji: "🎵",
+    category: "Áudio",
+    type: "SILVER",
   },
   {
     id: 5,
-    name: "Chapéu de Palha",
-    description: "Chapéu temático da festa",
+    name: "Avatar Junino",
+    description:
+      "Vista seu avatar com roupa xadrez e lenço, pronto pra dançar a quadrilha!",
     cost: 600,
-    emoji: "👒",
-    category: "Souvenirs",
+    emoji: " 🧑‍🌾",
+    category: "Visual",
     type: "SILVER",
   },
   {
     id: 6,
-    name: "Bandeirinha",
-    description: "Kit com 10 bandeirinhas coloridas",
+    name: "Pipa Especial",
+    description:
+      "Uma pipa personalizada que enfeita seu perfil!Será que você vai pegar a Pipa Rara?",
     cost: 600,
-    emoji: "🎪",
-    category: "Souvenirs",
+    emoji: "🪁",
+    category: "Brindes",
     type: "SILVER",
   },
   {
     id: 7,
-    name: "Desconto 10%",
-    description: "10% de desconto na próxima compra",
+    name: "Passaporte do Arraiá",
+    description:
+      "Libera acesso antecipado a jogos especiais e futuros eventos do arraiá virtual.",
     cost: 1000,
-    emoji: "💰",
-    category: "Descontos",
+    emoji: " 🎫",
+    category: "VIP",
     type: "GOLD",
   },
   {
     id: 8,
-    name: "Desconto 20%",
-    description: "20% de desconto na próxima compra",
-    cost: 1000,
+    name: "Desconto 50%",
+    description:
+      "Reduz pela metade o custo de qualquer prêmio (exceto diamant) por tempo limitado!",
+    cost: 5000,
     emoji: "💎",
     category: "Descontos",
-    type: "GOLD",
+    type: "Diamant",
   },
 ];
 
@@ -95,7 +103,16 @@ const RewardStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [redeemedRewards, setRedeemedRewards] = useState<number[]>([]);
 
-  const categories = ["Todos", "Comidas", "Bebidas", "Souvenirs", "Descontos"];
+  const categories = [
+    "Todos",
+    "Visual",
+    "Comunicação",
+    "Comidas",
+    "Áudio",
+    "Descontos",
+    "VIP",
+    "Brindes",
+  ];
 
   const filteredRewards =
     selectedCategory === "Todos"
@@ -144,22 +161,22 @@ const RewardStore = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 text-white p-4">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-300 via-orange-500 to-red-900 text-white p-4">
       <div className="max-w-6xl mx-auto">
         <PointsDisplay />
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-400/30">
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-400/50">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-2">
-              🎁 Loja de Prêmios 🎁
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-amber-700 to-orange-500 bg-clip-text text-transparent mb-2">
+              ⭐ Loja de Prêmios 🎁
             </h2>
-            <p className="text-purple-200">
+            <p className="text-purple-200 font-poppins">
               Troque seus pontos por prêmios reais!
             </p>
           </div>
 
           <div className="mb-8">
-            <h3 className="text-lg font-semibold mb-4 text-purple-200">
+            <h3 className="text-lg font-semibold mb-4 text-[#5e1c00]">
               Categorias
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -169,8 +186,8 @@ const RewardStore = () => {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedCategory === category
-                      ? "bg-yellow-600 text-white"
-                      : "bg-white/10 text-yellow-300 hover:bg-white/20"
+                      ? "bg-orange-700 text-white"
+                      : "bg-white/10 text-[#5e1c00] hover:bg-white/20"
                   }`}
                 >
                   {category}
@@ -211,7 +228,7 @@ const RewardStore = () => {
                             ? "bg-gray-500/30 text-gray-300"
                             : reward.type === "raro"
                             ? "bg-blue-500/30 text-blue-300"
-                            : "bg-purple-500/30 text-purple-300"
+                            : "bg-purple-400/30 text-purple-200"
                         }`}
                       >
                         {reward.type}
@@ -230,7 +247,7 @@ const RewardStore = () => {
                         disabled={userData?.coins < reward.cost}
                         className={`w-full font-bold ${
                           userData?.coins >= reward.cost
-                            ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white"
+                            ? "bg-gradient-to-r from-green-500 to-emerald-700 hover:from-green-700 hover:to-emerald-500 text-white"
                             : "bg-gray-600 text-gray-400 cursor-not-allowed"
                         }`}
                       >
@@ -248,13 +265,13 @@ const RewardStore = () => {
           <div className="flex gap-4">
             <Button
               onClick={() => navigate("/games")}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-xl"
+              className="flex-1 bg-gradient-to-r from-yellow-400 to-red-600 hover:from-red-500 hover:to-yellow-400 text-white font-bold py-3 rounded-xl"
             >
               🎮 Voltar aos Jogos
             </Button>
             <Button
               onClick={() => navigate("/leaderboard")}
-              className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white font-bold py-3 rounded-xl"
+              className="flex-1 bg-gradient-to-r from-yellow-400 to-red-600 hover:from-red-500 hover:to-yellow-400 text-white font-bold py-3 rounded-xl"
             >
               🏆 Ver Ranking
             </Button>
