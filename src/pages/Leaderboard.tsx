@@ -1,179 +1,320 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useGame } from "@/contexts/GameContext";
-
-// Mock leaderboard data - in a real app, this would come from a backend
-const generateLeaderboard = (currentPlayer: any) => {
-  const mockPlayers = [
-    { nickname: "João do Forró", avatar: "🎵", points: 850 },
-    { nickname: "Maria Bonita", avatar: "⭐", points: 720 },
-    { nickname: "Zé da Roça", avatar: "🌽", points: 680 },
-    { nickname: "Ana Caipira", avatar: "🎪", points: 650 },
-    { nickname: "Pedro Sanfoneiro", avatar: "🎭", points: 590 },
-    { nickname: "Luiza Festeira", avatar: "🔥", points: 540 },
-    { nickname: "Carlos Matuto", avatar: "🎯", points: 480 },
-    { nickname: "Rosa do Campo", avatar: "🏆", points: 420 },
-  ];
-
-  // Add current player to the list
-  const allPlayers = [
-    ...mockPlayers,
-    {
-      nickname: currentPlayer.nickname || "Você",
-      avatar: currentPlayer.avatar || "🌽",
-      points: currentPlayer.points || 0,
-    },
-  ];
-
-  // Sort by points and return top 10
-  return allPlayers
-    .sort((a, b) => b.points - a.points)
-    .slice(0, 10)
-    .map((player, index) => ({
-      ...player,
-      position: index + 1,
-    }));
-};
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUser } from "@/hooks/useUserData";
+import { Trophy, Medal, Award, Crown, Star, TrendingUp } from "lucide-react";
 
 const Leaderboard = () => {
   const navigate = useNavigate();
-  const { points, nickname, avatar } = useGame();
+  const { data: users, isLoading, error } = useUser();
 
-  const leaderboard = generateLeaderboard({ points, nickname, avatar });
-  const currentPlayerRank = leaderboard.find(
-    (player) =>
-      player.nickname === (nickname || "Você") && player.avatar === avatar
-  );
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Carregando ranking...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const getRankEmoji = (position: number) => {
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive mb-4">Erro ao carregar o ranking</p>
+          <Button onClick={() => navigate("/games")}>Voltar ao Lobby</Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Sort users by points (coins) and add position
+  const sortedUsers = (users || [])
+    .filter(user => user.coins !== undefined)
+    .sort((a, b) => (b.coins || 0) - (a.coins || 0))
+    .slice(0, 10)
+    .map((user, index) => ({
+      ...user,
+      position: index + 1,
+      points: user.coins || 0
+    }));
+
+  const getRankIcon = (position: number) => {
     switch (position) {
       case 1:
-        return "🥇";
+        return <Crown className="w-6 h-6 text-yellow-500" />;
       case 2:
-        return "🥈";
+        return <Trophy className="w-6 h-6 text-gray-400" />;
       case 3:
-        return "🥉";
+        return <Medal className="w-6 h-6 text-amber-600" />;
       default:
-        return "🏅";
+        return <Award className="w-5 h-5 text-muted-foreground" />;
     }
   };
 
-  const getRankColor = (position: number, isCurrentPlayer: boolean) => {
-    if (isCurrentPlayer) {
-      return "bg-gradient-to-r from-blue-100 to-purple-100 border-blue-400";
-    }
-
+  const getRankBadgeVariant = (position: number) => {
     switch (position) {
       case 1:
-        return "bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400";
+        return "default";
       case 2:
-        return "bg-gradient-to-r from-gray-100 to-slate-100 border-gray-400";
+        return "secondary";
       case 3:
-        return "bg-gradient-to-r from-orange-100 to-yellow-100 border-orange-400";
+        return "outline";
       default:
-        return "bg-white border-gray-300";
+        return "outline";
     }
   };
+
+  const getRankGradient = (position: number) => {
+    switch (position) {
+      case 1:
+        return "bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200";
+      case 2:
+        return "bg-gradient-to-r from-gray-50 to-slate-50 border-gray-200";
+      case 3:
+        return "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200";
+      default:
+        return "bg-white border-border";
+    }
+  };
+
+  const topThree = sortedUsers.slice(0, 3);
+  const otherUsers = sortedUsers.slice(3);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-400 via-red-500 to-yellow-500 p-4">
-      <div className="max-w-md mx-auto">
-        <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg border-2 border-yellow-300 mb-4">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-orange-600 mb-2">
-              🏆 Ranking da Festa 🏆
-            </h2>
-            <p className="text-sm text-gray-600">
-              Veja quem está mandando bem na fila!
-            </p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-200">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgb(59 130 246) 0%, transparent 50%), 
+                           radial-gradient(circle at 75% 75%, rgb(147 51 234) 0%, transparent 50%)`
+        }} />
+      </div>
 
-          {/* Current Player Stats */}
-          {currentPlayerRank && (
-            <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl p-4 border-2 border-blue-300 mb-6">
-              <div className="text-center">
-                <div className="text-2xl mb-2">{currentPlayerRank.avatar}</div>
-                <h3 className="font-bold text-gray-800">
-                  {currentPlayerRank.nickname}
-                </h3>
-                <p className="text-lg text-blue-600 font-bold">
-                  {currentPlayerRank.position}º lugar |{" "}
-                  {currentPlayerRank.points} pontos
-                </p>
-              </div>
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-4xl">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-3 mb-4">
+            <div className="p-3 bg-primary/10 rounded-full">
+              <TrendingUp className="w-8 h-8 text-primary" />
             </div>
-          )}
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              Ranking da Festa
+            </h1>
+          </div>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Veja quem está mandando bem na fila! Complete os jogos para subir no ranking.
+          </p>
+        </div>
 
-          {/* Leaderboard List */}
-          <div className="space-y-3">
-            {leaderboard.map((player) => {
-              const isCurrentPlayer =
-                player.nickname === (nickname || "Você") &&
-                player.avatar === avatar;
-
-              return (
-                <div
-                  key={`${player.nickname}-${player.avatar}`}
-                  className={`p-4 rounded-xl border-2 transition-all ${getRankColor(
-                    player.position,
-                    isCurrentPlayer
-                  )}`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-2xl">
-                        {getRankEmoji(player.position)}
-                      </div>
-                      <div className="text-2xl">{player.avatar}</div>
-                      <div>
-                        <h3
-                          className={`font-bold ${
-                            isCurrentPlayer ? "text-blue-800" : "text-gray-800"
-                          }`}
-                        >
-                          {player.nickname} {isCurrentPlayer && "(Você)"}
+        {/* Top 3 Podium */}
+        {topThree.length > 0 && (
+          <Card className="mb-8 overflow-hidden border-2 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b">
+              <CardTitle className="text-center flex items-center justify-center gap-2">
+                <Star className="w-6 h-6 text-primary" />
+                Top 3 Jogadores
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* 2nd Place */}
+                {topThree[1] && (
+                  <div className="order-1 md:order-1">
+                    <div className={`p-6 rounded-xl border-2 ${getRankGradient(2)} transition-all hover:shadow-md`}>
+                      <div className="text-center">
+                        <div className="mb-4 flex justify-center">
+                          {getRankIcon(2)}
+                        </div>
+                        <Avatar className="w-16 h-16 mx-auto mb-4 border-2 border-gray-300">
+                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${topThree[1].username}`} />
+                          <AvatarFallback className="text-lg font-bold">
+                            {topThree[1].username?.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <h3 className="font-bold text-lg mb-2 text-foreground">
+                          {topThree[1].username}
                         </h3>
-                        <p className="text-sm text-gray-600">
-                          {player.position}º lugar
+                        <Badge variant={getRankBadgeVariant(2)} className="mb-2">
+                          2º Lugar
+                        </Badge>
+                        <p className="text-2xl font-bold text-gray-600">
+                          {topThree[1].points} pts
                         </p>
                       </div>
                     </div>
+                  </div>
+                )}
 
-                    <div className="text-right">
-                      <div
-                        className={`text-lg font-bold ${
-                          player.position === 1
-                            ? "text-yellow-600"
-                            : player.position === 2
-                            ? "text-gray-600"
-                            : player.position === 3
-                            ? "text-orange-600"
-                            : isCurrentPlayer
-                            ? "text-blue-600"
-                            : "text-gray-700"
-                        }`}
-                      >
-                        {player.points} pts
+                {/* 1st Place - Larger */}
+                {topThree[0] && (
+                  <div className="order-2 md:order-2">
+                    <div className={`p-8 rounded-xl border-2 ${getRankGradient(1)} transition-all hover:shadow-lg transform md:scale-105`}>
+                      <div className="text-center">
+                        <div className="mb-4 flex justify-center">
+                          {getRankIcon(1)}
+                        </div>
+                        <Avatar className="w-20 h-20 mx-auto mb-4 border-4 border-yellow-300">
+                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${topThree[0].username}`} />
+                          <AvatarFallback className="text-xl font-bold">
+                            {topThree[0].username?.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <h3 className="font-bold text-xl mb-2 text-foreground">
+                          {topThree[0].username}
+                        </h3>
+                        <Badge variant={getRankBadgeVariant(1)} className="mb-3">
+                          🏆 Campeão
+                        </Badge>
+                        <p className="text-3xl font-bold text-yellow-600">
+                          {topThree[0].points} pts
+                        </p>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                )}
 
-          <div className="mt-6 text-center text-sm text-gray-600">
-            <p>🎮 Continue jogando para subir no ranking!</p>
-            <p>🔥 Ranking atualizado em tempo real</p>
-          </div>
+                {/* 3rd Place */}
+                {topThree[2] && (
+                  <div className="order-3 md:order-3">
+                    <div className={`p-6 rounded-xl border-2 ${getRankGradient(3)} transition-all hover:shadow-md`}>
+                      <div className="text-center">
+                        <div className="mb-4 flex justify-center">
+                          {getRankIcon(3)}
+                        </div>
+                        <Avatar className="w-16 h-16 mx-auto mb-4 border-2 border-orange-300">
+                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${topThree[2].username}`} />
+                          <AvatarFallback className="text-lg font-bold">
+                            {topThree[2].username?.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <h3 className="font-bold text-lg mb-2 text-foreground">
+                          {topThree[2].username}
+                        </h3>
+                        <Badge variant={getRankBadgeVariant(3)} className="mb-2">
+                          3º Lugar
+                        </Badge>
+                        <p className="text-2xl font-bold text-orange-600">
+                          {topThree[2].points} pts
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Other Rankings */}
+        {otherUsers.length > 0 && (
+          <Card className="mb-8 overflow-hidden border shadow-lg">
+            <CardHeader className="bg-muted/30 border-b">
+              <CardTitle className="text-center">Outros Participantes</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="divide-y">
+                {otherUsers.map((user) => (
+                  <div
+                    key={user.id}
+                    className={`p-6 transition-all hover:bg-muted/20 ${getRankGradient(user.position)}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3">
+                          {getRankIcon(user.position)}
+                          <Badge variant="outline" className="min-w-[60px] justify-center">
+                            {user.position}º
+                          </Badge>
+                        </div>
+                        <Avatar className="w-12 h-12 border-2 border-border">
+                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`} />
+                          <AvatarFallback className="font-bold">
+                            {user.username?.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <h3 className="font-semibold text-foreground">
+                            {user.username}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            Participante
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xl font-bold text-primary">
+                          {user.points}
+                        </p>
+                        <p className="text-sm text-muted-foreground">pontos</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Empty State */}
+        {(!users || users.length === 0) && (
+          <Card className="text-center py-12">
+            <CardContent>
+              <Trophy className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Nenhum jogador encontrado</h3>
+              <p className="text-muted-foreground mb-6">
+                Seja o primeiro a jogar e aparecer no ranking!
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button
+            onClick={() => navigate("/games")}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg"
+            size="lg"
+          >
+            🎮 Voltar aos Jogos
+          </Button>
+          <Button
+            onClick={() => navigate("/")}
+            variant="outline"
+            className="px-8 py-3 text-lg"
+            size="lg"
+          >
+            🏠 Página Inicial
+          </Button>
         </div>
 
-        <Button
-          onClick={() => navigate("/games")}
-          className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-xl"
-        >
-          🎪 Voltar ao Lobby
-        </Button>
+        {/* Stats Footer */}
+        <div className="mt-12 text-center">
+          <Card className="bg-gradient-to-r from-muted/50 to-muted/30 border-0">
+            <CardContent className="py-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div>
+                  <p className="text-2xl font-bold text-primary">{users?.length || 0}</p>
+                  <p className="text-sm text-muted-foreground">Jogadores Total</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-primary">
+                    {sortedUsers.reduce((sum, user) => sum + user.points, 0)}
+                  </p>
+                  <p className="text-sm text-muted-foreground">Pontos Distribuídos</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-primary">6</p>
+                  <p className="text-sm text-muted-foreground">Jogos Disponíveis</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
