@@ -95,13 +95,13 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen festa-bg relative overflow-hidden">
+    <div className="min-h-screen bg-[url(/xadrezinho.jpg)] relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className="absolute top-20 left-10 opacity-20 animate-float w-32"
           style={{ animationDelay: "0s" }}
         >
-        <img src="/login/login1.png" alt="" />/
+        
         </div>
         <div
           className="absolute top-1/3 right-20 text-5xl opacity-15 animate-bounce-gentle"
@@ -134,26 +134,24 @@ const Auth = () => {
         </Button>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-md">
+      <div className="relative z-10 container bg-[#ffcf23] rounded-xl border-4 border-amber-900 mx-auto px-4 py-8 max-w-md">
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4 animate-bounce-gentle">🎉</div>
-          <h1 className="font-festa text-3xl font-bold text-festa-text mb-2">
+          <img
+      src="/Festa_Junina-removebg-preview.png" // substitua pelo caminho real, se for diferente
+      alt="Ícone da festa"
+      className="mx-auto w-24 h-24 mb-4"
+    />
+          <div className="text-6xl mb-4 animate-bounce-gentle"></div>
+          <h1 className="font-festa text-3xl font-bold text-[#5e1c00] mb-2">
             Bem-vindo à Festa!
           </h1>
-          <p className="text-festa-text-light">
-            Entre ou crie sua conta para começar a diversão
+          <p className="text-[#5e1c00] font-poppins">
+            Seu lugar na quadrilha tá reservado: faça login e entre na dança!
           </p>
         </div>
 
         <Card className="glass-effect-ultra border-festa-border/50 shadow-2xl">
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="font-festa text-2xl text-festa-text">
-              Acesso à Plataforma
-            </CardTitle>
-            <CardDescription className="text-festa-text-muted">
-              Escolha como deseja continuar
-            </CardDescription>
-          </CardHeader>
+          
 
           <CardContent>
             <Tabs
@@ -165,13 +163,13 @@ const Auth = () => {
               <TabsList className="grid w-full grid-cols-2 mb-6 bg-festa-surface/50">
                 <TabsTrigger
                   value="login"
-                  className="data-[state=active]:bg-festa-accent data-[state=active]:text-white"
+                  className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
                 >
                   Entrar
                 </TabsTrigger>
                 <TabsTrigger
                   value="register"
-                  className="data-[state=active]:bg-festa-accent data-[state=active]:text-white"
+                  className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
                 >
                   Cadastrar
                 </TabsTrigger>
@@ -180,7 +178,7 @@ const Auth = () => {
               <TabsContent value="login" className="space-y-4">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-festa-text">
+                    <label className="text-sm font-medium text-[#5e1c00]">
                       Email
                     </label>
                     <div className="relative">
@@ -198,7 +196,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-festa-text">
+                    <label className="text-sm font-medium text-[#5e1c00]">
                       Senha
                     </label>
                     <div className="relative">
@@ -231,9 +229,9 @@ const Auth = () => {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full festa-button text-white font-semibold py-3 mt-6"
+                    className="w-full festa-button text-white font-poppins font-bold py-3 mt-6"
                   >
-                    {isLoading ? "Entrando..." : "🎪 Entrar na Festa"}
+                    {isLoading ? "Entrando..." : "Entrar no ArraiáOn"}
                   </Button>
                 </form>
               </TabsContent>
@@ -318,7 +316,7 @@ const Auth = () => {
                     disabled={isLoading}
                     className="w-full festa-button text-white font-semibold py-3 mt-6"
                   >
-                    {isLoading ? "Criando conta..." : "🎪 Criar Conta"}
+                    {isLoading ? "Criando conta..." : "Criar Conta"}
                   </Button>
                 </form>
               </TabsContent>
@@ -326,18 +324,6 @@ const Auth = () => {
           </CardContent>
         </Card>
 
-        <div className="text-center mt-6">
-          <p className="text-sm text-festa-text-muted">
-            Ao continuar, você concorda com nossos{" "}
-            <span className="text-festa-accent cursor-pointer hover:underline">
-              Termos de Uso
-            </span>{" "}
-            e{" "}
-            <span className="text-festa-accent cursor-pointer hover:underline">
-              Política de Privacidade
-            </span>
-          </p>
-        </div>
       </div>
     </div>
   );

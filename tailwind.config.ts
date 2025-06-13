@@ -22,6 +22,7 @@ export default {
 			fontFamily: {
 				'festa': ['Fredoka', 'cursive'],
 				'sans': ['Inter', 'sans-serif'],
+				poppins: ['Poppins', 'sans-serif']
 			},
 			colors: {
 				festa: {
