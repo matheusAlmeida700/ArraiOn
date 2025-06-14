@@ -34,7 +34,6 @@ const NumberGame = () => {
   }, [timeLeft, gameEnded]);
 
   useEffect(() => {
-    // Check for bingo (full row)
     const rows = [
       playerCard.slice(0, 5),
       playerCard.slice(5, 10),

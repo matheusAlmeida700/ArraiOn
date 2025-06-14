@@ -23,29 +23,27 @@ const PointsDisplay = () => {
               <span className="font-festa text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-festa-text block">
                 {userData?.username ?? ""}
               </span>
-              <div className="text-xs lg:text-sm xl:text-base text-festa-text-light font-medium">
+              <div className="text-xs lg:text-sm xl:text-base font-bold">
                 Nível {userData?.level ?? 0} ⭐
               </div>
             </div>
           </div>
           <div className="text-center lg:text-right">
-            <div className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-festa font-bold bg-gradient-to-r from-festa-accent to-festa-secondary bg-clip-text text-transparent">
+            <div className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-festa font-bold bg-gradient-to-r from-festa-accent to-festa-secondary bg-clip-text">
               {userData?.coins} Moedas
             </div>
-            <div className="text-xs lg:text-sm text-festa-text-muted font-medium">
+            <div className="text-xs lg:text-sm text-black/60 font-bold">
               Energia da festa
             </div>
           </div>
         </div>
 
-        <div className="mb-4 lg:mb-6 xl:mb-8">
+        <div className="mb-2 lg:mb-2">
           <div className="relative w-full bg-festa-surface/50 rounded-full h-3 lg:h-4 xl:h-5 overflow-hidden border border-festa-border/30">
             <div
-              className="bg-gradient-to-r from-festa-accent to-festa-secondary h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
+              className="bg-gradient-to-r from-orange-900/50 to-orange-900/95 h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
               style={{ width: `${progressPercentage}%` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shimmer"></div>
-            </div>
+            ></div>
           </div>
         </div>
       </div>

@@ -2,104 +2,103 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PointsDisplay from "@/components/PointsDisplay";
-import { useGame } from "@/contexts/GameContext";
 import { useUserData } from "@/hooks/useUserData";
 import { userDataService } from "@/services/api";
-import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/hooks/use-toast";
 
 const rewards = [
   {
     id: 1,
-    name: "Chapéu de Palha Virtual",
-    description:
-      "Deixa seu avatar no clima da roça com um chapéu arretado e cheio de estilo!",
-    cost: 50,
-    emoji: " 👒",
-    category: "Visual",
-    type: "BRONZE",
-  },
-  {
-    id: 2,
-    name: "Pamonha",
-    description:
-      "Uma pamonha virtual pra saborear com os olhos e exibir no seu perfil do arraiá!",
-    cost: 100,
+    name: "Milho Cozido",
+    description: "Delícia tradicional servida na palha! Um clássico do arraiá!",
+    cost: 200,
     emoji: "🌽",
     category: "Comidas",
     type: "BRONZE",
   },
   {
-    id: 3,
-    name: "Sticker “É São João, sô!” ",
+    id: 2,
+    name: "Boca do Palhaço",
     description:
-      "Um adesivo divertido pra animar seu perfil e mandar pros amigos na hora do forró!",
-    cost: 80,
-    emoji: " 🎉",
-    category: "Comunicação",
+      "Brinquedo clássico do arraiá: acerte a bola na boca do palhaço!",
+    cost: 200,
+    emoji: "🤡",
+    category: "Brinquedos",
+    type: "BRONZE",
+  },
+  {
+    id: 3,
+    name: "Maçã do Amor",
+    description: "Docinho caramelizado que não pode faltar na festa!",
+    cost: 200,
+    emoji: "🍎",
+    category: "Comidas",
     type: "BRONZE",
   },
   {
     id: 4,
-    name: "Trilha Sonora do Arraiá ",
+    name: "Pescaria",
     description:
-      "Ativa sons típicos juninos nos jogos e menus pra deixar tudo no ritmo da festa!",
-    cost: 200,
-    emoji: "🎵",
-    category: "Áudio",
+      "Brincadeira tradicional com prêmios simbólicos, diversão garantida!",
+    cost: 600,
+    emoji: "🎣",
+    category: "Brinquedos",
     type: "SILVER",
   },
   {
     id: 5,
-    name: "Avatar Junino",
+    name: "Correio Elegante",
     description:
-      "Vista seu avatar com roupa xadrez e lenço, pronto pra dançar a quadrilha!",
+      "Envie uma mensagem divertida ou romântica para alguém especial!",
     cost: 600,
-    emoji: " 🧑‍🌾",
-    category: "Visual",
+    emoji: "💌",
+    category: "Interações",
     type: "SILVER",
   },
   {
     id: 6,
-    name: "Pipa Especial",
+    name: "Barraca do Tiro ao Alvo",
     description:
-      "Uma pipa personalizada que enfeita seu perfil!Será que você vai pegar a Pipa Rara?",
+      "Mostre sua pontaria nessa barraca cheia de desafios e prêmios!",
     cost: 600,
-    emoji: "🪁",
-    category: "Brindes",
+    emoji: "🎯",
+    category: "Brinquedos",
     type: "SILVER",
   },
   {
     id: 7,
-    name: "Passaporte do Arraiá",
-    description:
-      "Libera acesso antecipado a jogos especiais e futuros eventos do arraiá virtual.",
+    name: "Show de Forró",
+    description: "Acesso ao show ao vivo com banda de forró arretada!",
     cost: 1000,
-    emoji: " 🎫",
-    category: "VIP",
+    emoji: "🎤",
+    category: "Atrações",
     type: "GOLD",
   },
   {
     id: 8,
-    name: "Desconto 50%",
+    name: "Quadrilha Tradicional",
+    description: "Participe da quadrilha com figurino típico e muita animação!",
+    cost: 1000,
+    emoji: "🕺💃",
+    category: "Atrações",
+    type: "GOLD",
+  },
+  {
+    id: 9,
+    name: "Canjica",
     description:
-      "Reduz pela metade o custo de qualquer prêmio (exceto diamant) por tempo limitado!",
-    cost: 5000,
-    emoji: "💎",
-    category: "Descontos",
-    type: "Diamant",
+      "Doce cremoso de milho com coco, um dos favoritos da festa junina!",
+    cost: 200,
+    emoji: "🥣",
+    category: "Comidas",
+    type: "BRONZE",
   },
 ];
 
 const RewardStore = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  console.log(user);
-
   const { data: userData } = useUserData();
   const navigate = useNavigate();
-  const { addPoints } = useGame();
 
+  const [isLoadingId, setIsLoadingId] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [redeemedRewards, setRedeemedRewards] = useState<number[]>([]);
 
@@ -133,30 +132,32 @@ const RewardStore = () => {
   };
 
   const handleRedeem = async (reward: (typeof rewards)[0]) => {
-    console.log("Sending:", {
-      cpf: user.cpf,
-      email: user.email,
-      type: reward.type,
-    });
-    if (userData.coins < reward.cost) return;
+    if (userData.coins < reward.cost) {
+      alert("Você não tem moedas suficientes para resgatar este item.");
+      return;
+    }
+
+    setIsLoadingId(reward.id);
 
     try {
       await userDataService.generateVoucher(
-        user.cpf,
-        user.email,
+        userData.cpf,
+        userData.email,
         reward.type.toUpperCase()
       );
       setRedeemedRewards((prev) => [...prev, reward.id]);
-      toast({
-        title: "Voucher gerado com sucesso",
-        description: "O código foi enviado ao seu e-mail!",
-      });
+      alert("Voucher gerado com sucesso. O código foi enviado ao seu e-mail!");
     } catch (err) {
-      toast({
-        title: "Erro ao gerar voucher",
-        description: "Tente novamente!",
-        variant: "destructive",
-      });
+      console.error("Erro ao gerar voucher:", err);
+      if (err?.response?.status === 429) {
+        alert("Você já resgatou um voucher hoje. Tente novamente em 24h.");
+      } else {
+        alert(
+          "Ocorreu um erro ao gerar o voucher. Tente novamente mais tarde."
+        );
+      }
+    } finally {
+      setIsLoadingId(null);
     }
   };
 
@@ -219,7 +220,7 @@ const RewardStore = () => {
                     </p>
 
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-lg font-bold text-yellow-400">
+                      <span className="text-lg font-bold text-orange-800">
                         {reward.cost} Moedas
                       </span>
                       <span
@@ -244,14 +245,19 @@ const RewardStore = () => {
                     ) : (
                       <Button
                         onClick={() => handleRedeem(reward)}
-                        disabled={userData?.coins < reward.cost}
+                        disabled={
+                          userData?.coins < reward.cost ||
+                          isLoadingId === reward.id
+                        }
                         className={`w-full font-bold ${
                           userData?.coins >= reward.cost
                             ? "bg-gradient-to-r from-green-500 to-emerald-700 hover:from-green-700 hover:to-emerald-500 text-white"
                             : "bg-gray-600 text-gray-400 cursor-not-allowed"
                         }`}
                       >
-                        {userData?.coins >= reward.cost
+                        {isLoadingId === reward.id
+                          ? "Gerando..."
+                          : userData?.coins >= reward.cost
                           ? "Resgatar"
                           : "XP Insuficiente"}
                       </Button>

@@ -7,7 +7,6 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const ReactionGame = () => {
   const { user } = useAuth();
-  console.log(user);
 
   const navigate = useNavigate();
   const { addPoints, incrementStreak, resetStreak } = useGame();

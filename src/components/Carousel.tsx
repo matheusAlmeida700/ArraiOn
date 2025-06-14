@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CarouselSlide {
@@ -46,8 +46,6 @@ const Carousel = () => {
         >
           <ChevronRight size={24} />
         </button>
-
-        {/* Slides */}
         <div
           className="w-full h-full flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -60,7 +58,6 @@ const Carousel = () => {
           ))}
         </div>
 
-        {/* Slide indicators */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {slides.map((_, index) => (
             <button

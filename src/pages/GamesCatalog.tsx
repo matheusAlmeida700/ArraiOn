@@ -7,7 +7,8 @@ const games = [
   {
     id: "quiz",
     name: "Quiz Junino",
-    description: "Você sabe mesmo tudo sobre festa junina? Teste seus conhecimentos nesse quiz arretado, com perguntas de múltipla escolha! Acertou, dançou! Ops... Ganhou!",
+    description:
+      "Você sabe mesmo tudo sobre festa junina? Teste seus conhecimentos nesse quiz arretado, com perguntas de múltipla escolha! Acertou, dançou! Ops... Ganhou!",
     icon: "🎓",
     xp: "10-30 XP",
     category: "Conhecimento",
@@ -21,7 +22,8 @@ const games = [
   {
     id: "memory",
     name: "Jogo da Memória",
-    description: "Combine imagens de bandeirinhas, pamonha, paçoca, fogueira, balão e muito mais! Vai dizer que você não lembra onde viu o milho agora há pouco?",
+    description:
+      "Combine imagens de bandeirinhas, pamonha, paçoca, fogueira, balão e muito mais! Vai dizer que você não lembra onde viu o milho agora há pouco?",
     icon: "🧠",
     xp: "15-25 XP",
     category: "Memória",
@@ -35,7 +37,8 @@ const games = [
   {
     id: "reaction",
     name: "Reflexo do Fogueteiro",
-    description: "O desafio aqui é ser rápido no gatilho, sô! Apareceu? Clique! Sumiu? Já era! Teste seus reflexos com objetos da roça pulando na tela!",
+    description:
+      "O desafio aqui é ser rápido no gatilho, sô! Apareceu? Clique! Sumiu? Já era! Teste seus reflexos com objetos da roça pulando na tela!",
     icon: "🎆",
     xp: "20-40 XP",
     category: "Reflexo",
@@ -49,7 +52,8 @@ const games = [
   {
     id: "pin-the-tail",
     name: "Acerte o Alvo",
-    description: "Pegue sua espingarda de brinquedo (de mentirinha, claro!) e tente acertar os alvos da festa!Balões, espigas de milho, bandeirinhas voando… Mire com cuidado e acerte o centro!",
+    description:
+      "Pegue sua espingarda de brinquedo (de mentirinha, claro!) e tente acertar os alvos da festa!Balões, espigas de milho, bandeirinhas voando… Mire com cuidado e acerte o centro!",
     icon: "🎯",
     xp: "10-50 XP",
     category: "Precisão",
@@ -63,7 +67,8 @@ const games = [
   {
     id: "rhythm",
     name: "Ritmo Forrozeiro",
-    description: "Sanfona tocou, as cores brilharam!Você consegue repetir a sequência de luzes no ritmo do forró?Use a memória e o ouvido pra seguir o compasso!",
+    description:
+      "Sanfona tocou, as cores brilharam!Você consegue repetir a sequência de luzes no ritmo do forró?Use a memória e o ouvido pra seguir o compasso!",
     icon: "🎵",
     xp: "15-35 XP",
     category: "Ritmo",
@@ -77,7 +82,8 @@ const games = [
   {
     id: "number",
     name: "Bingo Caipira",
-    description: "Complete a cartela com elementos juninos sorteados: milho, canjica, fogueira, balão, e muito mais.Quem fechar a cartela primeiro grita: “BINGOOO DO ARRAIÁ!",
+    description:
+      "Complete a cartela com elementos juninos sorteados: milho, canjica, fogueira, balão, e muito mais.Quem fechar a cartela primeiro grita: “BINGOOO DO ARRAIÁ!",
     icon: "🎲",
     xp: "10-30 XP",
     category: "Sorte",
@@ -138,27 +144,24 @@ const GamesCatalog = () => {
       <div className="max-w-7xl mx-auto p-4 lg:p-8">
         <PointsDisplay />
 
-        {/* Hero Banner */}
         <div
           className={`hero-banner rounded-3xl lg:rounded-[3rem] p-8 lg:p-16 mb-12 lg:mb-16 text-center transition-all duration-1000 ${
             isLoaded ? "animate-slide-up" : "opacity-0"
           }`}
           style={{
-            backgroundImage:
-              "url('/bannerCatalogo.png')",
+            backgroundImage: "url('/bannerCatalogo.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
           <h1 className="font-festa text-4xl lg:text-7xl xl:text-8xl font-bold text-orange-900 mb-6 lg:mb-8 text-shadow-strong">
-          Catálogo de Jogos
+            Catálogo de Jogos
           </h1>
-          <p className="text-lg lg:text-3xl xl:text-2xl text-orange-900 font-medium mb-6  font-[Poppins]" >
-          Escolha um dos nossos jogos e se divirta que é bão demais da conta!
+          <p className="text-lg lg:text-3xl xl:text-2xl text-orange-900 font-medium mb-6  font-[Poppins]">
+            Escolha um dos nossos jogos e se divirta que é bão demais da conta!
           </p>
         </div>
 
-        {/* Filters with Enhanced Design */}
         <div className="mb-12 lg:mb-16 space-y-8 lg:space-y-12">
           <div
             className={`transition-all duration-700 delay-300 ${
@@ -193,7 +196,6 @@ const GamesCatalog = () => {
             }`}
           >
             <div className="glass-effect-strong rounded-2xl lg:rounded-3xl px-6 lg:px-8 border-2 border-indigo-300/40">
-            
               <h3 className="font-festa text-xl lg:text-3xl font-bold mb-6 text-[#5e1c00] flex items-center">
                 ⚡ <span className="ml-3">Dificuldade</span>
               </h3>
@@ -216,7 +218,6 @@ const GamesCatalog = () => {
           </div>
         </div>
 
-        {/* Enhanced Games Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16">
           {filteredGames.map((game, index) => (
             <div
@@ -227,7 +228,6 @@ const GamesCatalog = () => {
               onMouseLeave={() => setHoveredGame(null)}
               onClick={() => navigate(`/games/${game.id}`)}
             >
-              {/* Enhanced Game Image with Overlay */}
               <div
                 className={`h-48 lg:h-56 xl:h-64 bg-gradient-to-br ${game.gradient} relative overflow-hidden`}
                 style={{
@@ -238,7 +238,6 @@ const GamesCatalog = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
-                {/* Popularity Badge */}
                 <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-500/90 to-orange-500/90 backdrop-blur-sm rounded-full px-3 py-1 border border-yellow-400/50">
                   <span className="text-white font-bold text-xs lg:text-sm">
                     ⭐ {game.popularity}% popular
@@ -249,7 +248,6 @@ const GamesCatalog = () => {
                   {game.icon}
                 </div>
 
-                {/* caixa de XP */}
                 <div className="absolute bottom-4 left-4">
                   <div className="inline-flex items-center px-3 lg:px-4 py-2 bg-gradient-to-r from-orange-500/70 to-pink-600/80 rounded-full border border-purple-400/50 backdrop-blur-sm">
                     <span className="text-yellow-300 font-bold text-sm lg:text-base">
@@ -258,7 +256,6 @@ const GamesCatalog = () => {
                   </div>
                 </div>
 
-                {/* Hover Overlay */}
                 {hoveredGame === game.id && (
                   <div className="absolute inset-0 bg-gradient-to-t from-orange-500/70 via-transparent to-transparent animate-slide-up">
                     <div className="absolute bottom-6 left-6 right-6 text-center">
@@ -270,7 +267,6 @@ const GamesCatalog = () => {
                 )}
               </div>
 
-              {/* Enhanced Game Info */}
               <div className="p-6 lg:p-8">
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="font-festa text-lg lg:text-2xl xl:text-3xl font-bold text-white group-hover:text-orange-300 transition-colors">
@@ -286,11 +282,9 @@ const GamesCatalog = () => {
                     </span>
                   </div>
                 </div>
-                      {/* descrição dos jogos */}
                 <p className="text-purple-200 text-sm lg:text-base mb-6 leading-relaxed font-poppins">
                   {game.description}
                 </p>
-                      {/* botoes de categorias dos jogos */}
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-sm lg:text-base px-3 py-2 bg-purple-600/30 rounded-full text-purple-200 border border-purple-400/40 font-medium">
                     📂 {game.category}
@@ -314,7 +308,6 @@ const GamesCatalog = () => {
           ))}
         </div>
 
-        {/* Enhanced Navigation */}
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 transition-all duration-700 delay-700 ${
             isLoaded ? "animate-slide-up" : "opacity-0"

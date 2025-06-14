@@ -1,6 +1,3 @@
-
-import { QueryClient } from "@tanstack/react-query";
-
 export class ApiError extends Error {
   status: number;
   data?: any;
@@ -98,7 +95,7 @@ export const api = {
 
     try {
       const response = await apiFetch(url);
-      const items = response.users;
+      const items = response;
 
       if (!items || !Array.isArray(items)) {
         console.error("Invalid response format from API");

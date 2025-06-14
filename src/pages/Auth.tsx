@@ -100,27 +100,19 @@ const Auth = () => {
         <div
           className="absolute top-20 left-10 opacity-20 animate-float w-32"
           style={{ animationDelay: "0s" }}
-        >
-        
-        </div>
+        ></div>
         <div
           className="absolute top-1/3 right-20 text-5xl opacity-15 animate-bounce-gentle"
           style={{ animationDelay: "1s" }}
-        >
-        
-        </div>
+        ></div>
         <div
           className="absolute bottom-1/4 left-20 text-4xl opacity-25 animate-float"
           style={{ animationDelay: "2s" }}
-        >
-        
-        </div>
+        ></div>
         <div
           className="absolute bottom-20 right-10 text-5xl opacity-20 animate-bounce-gentle"
           style={{ animationDelay: "3s" }}
-        >
-        
-        </div>
+        ></div>
       </div>
 
       <div className="relative z-10 p-6">
@@ -137,10 +129,10 @@ const Auth = () => {
       <div className="relative z-10 container bg-[#ffcf23] rounded-xl border-4 border-amber-900 mx-auto px-4 py-8 max-w-md">
         <div className="text-center mb-8">
           <img
-      src="/Festa_Junina-removebg-preview.png" // substitua pelo caminho real, se for diferente
-      alt="Ícone da festa"
-      className="mx-auto w-24 h-24 mb-4"
-    />
+            src="/Festa_Junina-removebg-preview.png"
+            alt="Ícone da festa"
+            className="mx-auto w-24 h-24 mb-4"
+          />
           <div className="text-6xl mb-4 animate-bounce-gentle"></div>
           <h1 className="font-festa text-3xl font-bold text-[#5e1c00] mb-2">
             Bem-vindo à Festa!
@@ -151,8 +143,6 @@ const Auth = () => {
         </div>
 
         <Card className="glass-effect-ultra border-festa-border/50 shadow-2xl">
-          
-
           <CardContent>
             <Tabs
               defaultValue="login"
@@ -323,7 +313,6 @@ const Auth = () => {
             </Tabs>
           </CardContent>
         </Card>
-
       </div>
     </div>
   );

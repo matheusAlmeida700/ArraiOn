@@ -1,6 +1,3 @@
-
-import React from 'react';
-
 const SiteHeader = () => {
   return (
     <div className="text-center py-8">
@@ -12,9 +9,6 @@ const SiteHeader = () => {
           sua plataforma junina favorita
         </p>
       </div>
-      
-      
-      
     </div>
   );
 };

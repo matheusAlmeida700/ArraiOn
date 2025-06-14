@@ -7,30 +7,30 @@ import SiteHeader from "@/components/SiteHeader";
 import Carousel from "@/components/Carousel";
 import CurvedSection from "@/components/CurvedSection";
 
-
-
-
 const featuredRewards = [
   {
     name: "Canjica Doce",
     emoji: "🥛",
     cost: "50 XP",
     description: "Deliciosa e quentinha para aquecer o coração",
-    image: "https://www.lecreuset.com.br/dw/image/v2/BDRT_PRD/on/demandware.static/-/Sites-le-creuset-br-master/default/dw46131ac0/images/canjica_com_doce_de_leite_receita_le_creuset.png?sw=650&sh=650&sm=fit",
+    image:
+      "https://www.lecreuset.com.br/dw/image/v2/BDRT_PRD/on/demandware.static/-/Sites-le-creuset-br-master/default/dw46131ac0/images/canjica_com_doce_de_leite_receita_le_creuset.png?sw=650&sh=650&sm=fit",
   },
   {
     name: "Pamonha Tradicional",
     emoji: "🌽",
     cost: "75 XP",
     description: "O sabor autêntico da festa junina",
-    image: "https://www.saborbrasil.it/wp-content/uploads/2021/06/Pamonha-1024x768.jpg",
+    image:
+      "https://www.saborbrasil.it/wp-content/uploads/2021/06/Pamonha-1024x768.jpg",
   },
   {
     name: "Chapéu de Palha",
     emoji: "👒",
     cost: "120 XP",
     description: "Complete seu visual caipira com estilo",
-    image: "https://cdn.awsli.com.br/600x700/1356/1356487/produto/100720274/0c466e71d4.jpg",
+    image:
+      "https://cdn.awsli.com.br/600x700/1356/1356487/produto/100720274/0c466e71d4.jpg",
   },
 ];
 
@@ -60,27 +60,18 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#f5e9d3] text-festa-text overflow-hidden relative">
-    {/* Decorative top banner */}
       <DecorativeBanner />
-      
-      {/* Main content area */}
+
       <div className="container mx-auto px-4 py-8">
-        {/* Site header with title and icons */}
         <SiteHeader />
-        
-        {/* Main carousel section */}
+
         <div className="mb-16">
           <Carousel />
         </div>
       </div>
-      
-      {/* Curved bottom section */}
+
       <CurvedSection />
 
-      {/* Featured Games Section */}
-      
-
-      {/* Featured Rewards Section */}
       <section className="py-12 lg:py-16 xl:py-20 px-4 lg:px-8 xl:px-12 relative">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-8 lg:mb-12 xl:mb-16">
@@ -131,7 +122,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Call to Action */}
       <section className="py-12 lg:py-16 xl:py-20 px-4 lg:px-8 xl:px-12 bg-[#c1440e] backdrop-blur-sm text-center relative">
         <div className="container mx-auto max-w-4xl">
           <h3 className="font-festa text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-festa-text mb-3 lg:mb-4">
@@ -145,7 +135,7 @@ const Index = () => {
             onClick={handleEnterFesta}
             className="festa-button text-white font-festa font-semibold py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-base lg:text-lg shadow-lg"
           >
-             Entrar na Festa!
+            Entrar na Festa!
           </Button>
         </div>
       </section>
